@@ -13,40 +13,42 @@ print_usage() {
     exit 0
 } # print_usage()
 
-setup_make_env_preconf() {
-    COMMAND="$0 $*"
-    CMDNAME=$(basename $0)
-
+setup_make_command() {
+    SUDO="sudo"
     TIME="time -l"
-    MAKE=make
+    MAKE="make"
+
     MAKE_FLAGS="-DDB_FROM_SRC -DNO_FSCHG"
-    MAKE_JOBS_NUM=32
-
-    return 0
-} # setup_make_env_preconf()
-
-setup_make_env_postconf() {
-    if [ -z "${SRCDIR}" ] || \
-           [ -z "${DESTDIR}" ]; then
-        echo "${CMDNAME}: You must specify both src and dst directories."
-        exit 1
+    if [ -n "${MAKE_FLAGS_ADD}" ]; then
+        MAKE_FLAGS="${MAKE_FLAGS} ${MAKE_FLAGS_ADD}"
     fi
-
-    MAKE_ENV="KERNCONF=${KERNCONF} TARGET=${UNAME_m} TARGET_ARCH=${UNAME_p} DESTDIR=${DESTDIR}"
-    if [ -n "${UBLDR_LOADADDR}" ]; then
-        MAKE_ENV="${MAKE_ENV} UBLDR_LOADADDR=${UBLDR_LOADADDR}"
-    fi
-
-    return 0
-} # setup_make_env_postconf()
-
-setup_make_flags() {
-    if [ "${MAKE_TARGET}" == "buildworld" ] || \
-           [ "${MAKE_TARGET}" == "buildkernel" ]; then
+    MAKE_JOBS_NUM=$NJOBS
+    if [ "${1}" = "buildworld" ] || \
+           [ "${1}" = "buildkernel" ]; then
         MAKE_FLAGS="-j ${MAKE_JOBS_NUM} ${MAKE_FLAGS}"
     fi
+
+    if [ -n "${OBJDIR}" ]; then
+        MAKE_ENVS="env MAKEOBJDIRPREFIX=${OBJDIR}"
+    fi
+
+    MAKE_ARGS="DESTDIR=${DESTDIR}"
+    if [ -n "${KENCONF}" ]; then
+        MAKE_ARGS="KERNCONF=${KERNCONF}"
+    fi
+    if [ -n "${UNAME_m}" ]; then
+        MAKE_ARGS="${MAKE_ARGS} TARGET=${UNAME_m}"
+    fi
+    if [ -n "${UNAME_p}" ]; then
+        MAKE_ARGS="${MAKE_ARGS} TARGET_ARCH=${UNAME_p}"
+    fi
+    if [ -n "${UBLDR_LOADADDR}" ]; then
+        MAKE_ARGS="${MAKE_ARGS} UBLDR_LOADADDR=${UBLDR_LOADADDR}"
+    fi
+
     return 0
-} # setup_make_flags()
+} # setup_make_command()
+
 
 print_exec_command() {
     MAKE_COMMAND="${TIME} ${MAKE} ${MAKE_FLAGS} ${MAKE_ENV} ${MAKE_TARGET}"
@@ -73,7 +75,6 @@ print_finish_message() {
 
 main() {
     STARTDATE=$(date)
-    setup_make_env_preconf
     if [ $# -eq 0 ]; then
         print_usage
     else
@@ -89,10 +90,8 @@ main() {
         done
     fi
     . ${CONFDIR}/${DESTHOST}.conf
-    setup_make_env_postconf
     shift $((${OPTIND} - 1))
     MAKE_TARGET=$@
-    setup_make_flags
     if [ "${MAKE_TARGET}" == "installworld" ] || \
            [ "${MAKE_TARGET}" == "installkernel" ] || \
            [ "${MAKE_TARGET}" == "distribution" ]; then
