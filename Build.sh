@@ -2,9 +2,7 @@
 
 export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
-export NO_WERROR=1
 
-LOCALBASE=/usr/local
 CONFDIR=$(pwd)/conf
 print_usage() {
     echo "Usage: ${CMDNAME} [-?|-h hostname [-n] [make_target ...]]"
