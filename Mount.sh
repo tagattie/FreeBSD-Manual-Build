@@ -3,15 +3,16 @@
 export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
-CMDNAME=$(basename $0)
+CMDNAME=$(basename "$0")
 CONFDIR=$(pwd)/conf
+export CONFDIR
 
 MOUNT=0
 UNMOUNT=0
 CHECK=0
 
 print_usage() {
-    echo "Usage: ${CMDNAME} -?|-h hostname -m|-u|-c"
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-m|-u|-c]]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -h: Target hostname."
@@ -23,16 +24,16 @@ print_usage() {
 
 mount_targets() {
     for i in ${MOUNT_TARGETS}; do
-        host=$(echo ${i}|awk -F':' '{print $1}')
-        dir=$(echo ${i}|awk -F':' '{print $2}')
-        if [ "${dir}" == "/NFSRoot" ] || \
-               [ "${dir}" == "/TFTPBoot" ]; then
+        host=$(echo "${i}"|awk -F':' '{print $1}')
+        dir=$(echo "${i}"|awk -F':' '{print $2}')
+        if [ "${dir}" = "/NFSRoot" ] || \
+               [ "${dir}" = "/TFTPBoot" ]; then
             dir=
         fi
-        fstype=$(echo ${i}|awk -F':' '{print $3}')
-        destbase=$(echo ${i}|awk -F':' '{print $4}')
+        fstype=$(echo "${i}"|awk -F':' '{print $3}')
+        destbase=$(echo "${i}"|awk -F':' '{print $4}')
         echo "${CMDNAME}: Mounting ${i}..."
-        mount -t ${fstype} ${host}:${dir} ${destbase}${dir}
+        mount -t "${fstype}" "${host}:${dir}" "${destbase}${dir}"
     done
     return 0
 }
@@ -40,23 +41,23 @@ mount_targets() {
 unmount_targets() {
     for i in ${UNMOUNT_TARGETS}; do
         echo "${CMDNAME}: Unmounting ${i}..."
-        umount ${i} || ESTATUS=$?
+        umount "${i}" || ESTATUS=$?
     done
     return 0
 }
 
 setup_target_vars() {
     MOUNTED_TARGETS=$(for i in ${MOUNT_TARGETS}; do
-                          dir=$(echo ${i}|awk -F':' '{print $2}')
-                          if [ "${dir}" == "/NFSRoot" ] || \
-                                 [ "${dir}" == "/TFTPBoot" ]; then
+                          dir=$(echo "${i}"|awk -F':' '{print $2}')
+                          if [ "${dir}" = "/NFSRoot" ] || \
+                                 [ "${dir}" = "/TFTPBoot" ]; then
                               dir=
                           fi
-                          destbase=$(echo ${i}|awk -F':' '{print $4}')
-                          echo ${destbase}${dir}|sed -e 's|/$||'
+                          destbase=$(echo "${i}"|awk -F':' '{print $4}')
+                          echo "${destbase}${dir}"|sed -e 's|/$||'
                       done)
     UNMOUNT_TARGETS=$(for i in ${MOUNTED_TARGETS}; do
-                          echo ${i}
+                          echo "${i}"
                       done | sort -r)
     return 0
 }
@@ -65,7 +66,7 @@ check_targets_mounted() {
     echo "${CMDNAME}: Checking if target filesystems are mounted."
     all_mounted=1
     for i in ${MOUNTED_TARGETS}; do
-        mounted=$(mount|awk -v var=${i} '$3==var{print 1}')
+        mounted=$(mount|awk -v var="${i}" '$3==var{print 1}')
         all_mounted=$((all_mounted & mounted))
     done
     if [ ${all_mounted} -eq 0 ]; then
@@ -76,7 +77,7 @@ check_targets_mounted() {
 }
 
 main() {
-    while getopts ?h:muc OPT; do
+    while getopts \?h:muc OPT; do
         case ${OPT} in
             "?")
                 print_usage ;;
@@ -90,12 +91,10 @@ main() {
                 CHECK=1 ;;
         esac
     done
-    if [ -z "${DESTHOST}" ]; then
-        echo "${CMDNAME}: You must specify a target hostname with -h."
-        exit 1
-    fi
-    . ${CONFDIR}/${DESTHOST}.conf
+
+    . "${CONFDIR}/host/${DESTHOST}.sh"
     setup_target_vars
+
     if [ ${MOUNT} -eq 1 ]; then
         mount_targets
     elif [ ${UNMOUNT} -eq 1 ]; then
