@@ -91,13 +91,13 @@ main() {
             esac
         done
     fi
-    . ${CONFDIR}/${DESTHOST}.conf
 
     COMMAND="$0 $*"
     CMDNAME=$(basename "$0")
     shift $((OPTIND - 1))
     MAKE_TARGETS=$*
 
+    . "${CONFDIR}/host/${DESTHOST}.sh"
 
     if [ -z "${SRCDIR}" ] || \
            [ -z "${DESTDIR}" ]; then
