@@ -4,8 +4,10 @@ export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
 CONFDIR=$(pwd)/conf
+export CONFDIR
+
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|-h hostname [-n] [make_target ...]]"
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-n] make_target ...]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -h: Target hostname."
@@ -49,36 +51,36 @@ setup_make_command() {
     return 0
 } # setup_make_command()
 
-
-print_exec_command() {
-    MAKE_COMMAND="${TIME} ${MAKE} ${MAKE_FLAGS} ${MAKE_ENV} ${MAKE_TARGET}"
+print_make_command() {
+    MAKE_COMMAND="${TIME} ${SUDO} ${MAKE_ENVS} \
+        ${MAKE} ${MAKE_FLAGS} ${MAKE_ARGS} ${1}"
     echo "=== Custom build settings ===================================="
     echo "COMMAND: ${COMMAND}"
     echo "SRCDIR: ${SRCDIR}"
+    echo "DESTDIR: ${DESTDIR}"
     echo "KERNCONF: ${KERNCONF}"
     echo "TARGET: ${UNAME_m}"
     echo "TARGET_ARCH: ${UNAME_p}"
-    echo "DESTDIR: ${DESTDIR}"
+    echo "MAKE_ENVS: ${MAKE_ENVS}"
     echo "MAKE_FLAGS: ${MAKE_FLAGS}"
-    echo "MAKE_ENV: ${MAKE_ENV}"
-    echo "MAKE_TARGET: ${MAKE_TARGET}"
+    echo "MAKE_ARGS: ${MAKE_ARGS}"
+    echo "MAKE_TARGETS: ${1}"
     echo "MAKE_COMMAND: ${MAKE_COMMAND}"
     echo "=============================================================="
     return 0
 } # print_make_command()
 
 print_finish_message() {
-    echo "Making ${MAKE_TARGET} started at ${STARTDATE}."
-    echo "Making ${MAKE_TARGET} finished at ${FINISHDATE}."
+    echo "Making ${1} started at ${STARTDATE}."
+    echo "Making ${1} finished at ${FINISHDATE}."
     return 0
 } # print_finish_message()
 
 main() {
-    STARTDATE=$(date)
     if [ $# -eq 0 ]; then
         print_usage
     else
-        while getopts ?h:n OPT; do
+        while getopts \?h:n OPT; do
             case ${OPT} in
                 "?")
                     print_usage ;;
@@ -90,9 +92,19 @@ main() {
         done
     fi
     . ${CONFDIR}/${DESTHOST}.conf
-    shift $((${OPTIND} - 1))
+
+    COMMAND="$0 $*"
+    CMDNAME=$(basename "$0")
+    shift $((OPTIND - 1))
+    MAKE_TARGETS=$*
+
+
+    if [ -z "${SRCDIR}" ] || \
+           [ -z "${DESTDIR}" ]; then
+        echo "${CMDNAME}: You must specify both src and dst directories."
+        exit 1
     fi
-    return ${ESTATUS}
+
     for i in ${MAKE_TARGETS}; do
         STARTDATE=$(date)
 
@@ -120,6 +132,8 @@ main() {
         FINISHDATE=$(date)
         print_finish_message "${1}"
     done
+
+    return 0
 } # main()
 
 main "${@}"
