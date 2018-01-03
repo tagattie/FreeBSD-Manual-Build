@@ -27,15 +27,6 @@ setup_make_env_preconf() {
     return 0
 } # setup_make_env_preconf()
 
-
-check_cmd_options() {
-    if [ -z "${DESTHOST}" ]; then
-        echo "${CMDNAME}: You must specify a target hostname with -h."
-        exit 1
-    fi
-    return 0
-} # check_cmd_options()
-
 setup_make_env_postconf() {
     if [ -z "${SRCDIR}" ] || \
            [ -z "${DESTDIR}" ]; then
@@ -85,17 +76,20 @@ print_finish_message() {
 main() {
     STARTDATE=$(date)
     setup_make_env_preconf
-    while getopts ?h:n OPT; do
-        case ${OPT} in
-            "?")
-                print_usage ;;
-            "h")
-                DESTHOST=${OPTARG} ;;
-            "n")
-                MAKE_FLAGS="-n ${MAKE_FLAGS}" ;;
-        esac
-    done
-    check_cmd_options
+    if [ $# -eq 0 ]; then
+        print_usage
+    else
+        while getopts ?h:n OPT; do
+            case ${OPT} in
+                "?")
+                    print_usage ;;
+                "h")
+                    DESTHOST=${OPTARG} ;;
+                "n")
+                    MAKE_FLAGS="-n ${MAKE_FLAGS}" ;;
+            esac
+        done
+    fi
     . ${CONFDIR}/${DESTHOST}.conf
     setup_make_env_postconf
     shift $((${OPTIND} - 1))
