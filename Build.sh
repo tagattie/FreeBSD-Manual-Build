@@ -91,23 +91,35 @@ main() {
     fi
     . ${CONFDIR}/${DESTHOST}.conf
     shift $((${OPTIND} - 1))
-    MAKE_TARGET=$@
-    if [ "${MAKE_TARGET}" == "installworld" ] || \
-           [ "${MAKE_TARGET}" == "installkernel" ] || \
-           [ "${MAKE_TARGET}" == "distribution" ]; then
-        $(pwd)/Mount.sh -h ${DESTHOST} -c
     fi
-    print_exec_command
-#    exit 0
-    (cd ${SRCDIR} && ${MAKE_COMMAND})
-    ESTATUS=$?
-    if [ $ESTATUS -eq 0 ]; then
-        do_post_install_kernel
-        do_post_install_world
-    fi
-    FINISHDATE=$(date)
-    print_finish_message
     return ${ESTATUS}
+    for i in ${MAKE_TARGETS}; do
+        STARTDATE=$(date)
+
+        setup_make_command "${i}"
+        if [ "${i}" = "installworld" ] || \
+               [ "${i}" = "installkernel" ] || \
+               [ "${i}" = "distribution" ]; then
+            $(pwd)/Mount.sh -h "${DESTHOST}" -c
+        fi
+
+        print_make_command "${i}"
+        # continue
+        (cd "${SRCDIR}" && ${MAKE_COMMAND})
+        ESTATUS=$?
+        if [ $ESTATUS -eq 0 ]; then
+            if [ "${i}" = "installkernel" ]; then
+                do_post_installkernel
+            elif [ "${i}" = "installworld" ]; then
+                do_post_installworld
+            fi
+        else
+            exit $ESTATUS
+        fi
+
+        FINISHDATE=$(date)
+        print_finish_message "${1}"
+    done
 } # main()
 
 main "${@}"
