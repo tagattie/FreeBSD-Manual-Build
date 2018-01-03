@@ -6,6 +6,14 @@ export NO_WERROR=1
 
 LOCALBASE=/usr/local
 CONFDIR=$(pwd)/conf
+print_usage() {
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-n] [make_target ...]]"
+    echo "Options:"
+    echo "  -?: Show this message."
+    echo "  -h: Target hostname."
+    echo "  -n: Dry run."
+    exit 0
+} # print_usage()
 
 setup_make_env_preconf() {
     COMMAND="$0 $*"
@@ -19,14 +27,6 @@ setup_make_env_preconf() {
     return 0
 } # setup_make_env_preconf()
 
-print_usage() {
-    echo "Usage: ${CMDNAME} -?|-h hostname [-n] make_target"
-    echo "Options:"
-    echo "  -?: Show this message."
-    echo "  -h: Target hostname."
-    echo "  -n: Dry run."
-    exit 0
-} # print_usage()
 
 check_cmd_options() {
     if [ -z "${DESTHOST}" ]; then
