@@ -18,10 +18,10 @@ NJOBS=$(sysctl hw.ncpu|awk '{print $NF}')
 export NJOBS
 
 # these functions will be overridden by host-specific conf
-post_installkernel() {
+do_post_installkernel() {
     return 0
 }
-post_installworld() {
+do_post_installworld() {
 	return 0
 }
 install_boot() {
