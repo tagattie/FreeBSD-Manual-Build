@@ -1,3 +1,3 @@
 #! /bin/sh
 
-export SRCDIR=/mnt/freebsd/src/releng/111
+export SRCDIR=/usr/src
