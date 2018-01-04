@@ -38,8 +38,8 @@ setup_make_command() {
     fi
 
     MAKE_ARGS="DESTDIR=${DESTDIR}"
-    if [ -n "${KENCONF}" ]; then
-        MAKE_ARGS="KERNCONF=${KERNCONF}"
+    if [ -n "${KERNCONF}" ]; then
+        MAKE_ARGS="${MAKE_ARGS} KERNCONF=${KERNCONF}"
     fi
     if [ -n "${UNAME_m}" ]; then
         MAKE_ARGS="${MAKE_ARGS} TARGET=${UNAME_m}"
