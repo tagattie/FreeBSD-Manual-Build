@@ -1,24 +1,31 @@
 #! /bin/sh
 
+ARCH=mips64
+BRANCH=current
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/mips64.sh
-. "${CONFDIR}/arch/mips64.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
 # shellcheck source=../branch/current.sh
-. "${CONFDIR}/branch/current.sh"
+. "${CONFDIR}/branch/${BRANCH}.sh"
 
-export DESTHOST=mips64-current
-export CAPDDESTHOST=Mips64-Current
-export KERNCONF=ERL
+export DESTHOST=${ARCH}-${BRANCH}
+CAPDDESTHOST=$(echo ${DESTHOST} | \
+    awk '{print toupper(substr($0,1,1)) substr($0,2,length($0)-1)}')
+export CAPDDESTHOST
+export KERNCONF=ERL # no GENERIC kernel config provided
 
 export MAKE_FLAGS_ADD="-DCROSS_TOOLCHAIN=mips64-gcc"
 
-export OBJDIR=/var/tmp/jenkins/freebsd/obj/current
+export OBJDIR_BASEDIR=/var/tmp/jenkins/freebsd/obj
+export OBJDIR=${OBJDIR_BASEDIR}/${DESTHOST}
 
-export DESTROOT_BASEDIR=/var
+export DESTROOT_BASEDIR=/
 export DESTROOT_MOUNTTYPE=zfs
-export DESTDIR=${DESTROOT_BASEDIR}/tmp/jenkins/freebsd/destdir/${DESTHOST}
+export DESTDIR_BASEDIR=/var/tmp/jenkins/freebsd/destdir
+export DESTDIR=${DESTROOT_BASEDIR}${DESTDIR_BASEDIR}/${DESTHOST}
 
 export DESTROOTDIR=${DESTDIR}${ROOTDIR}
 
