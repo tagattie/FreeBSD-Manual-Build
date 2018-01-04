@@ -1,22 +1,29 @@
 #! /bin/sh
 
+ARCH=amd64
+BRANCH=stable11
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/amd64.sh
-. "${CONFDIR}/arch/amd64.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
 # shellcheck source=../branch/stable11.sh
-. "${CONFDIR}/branch/stable11.sh"
+. "${CONFDIR}/branch/${BRANCH}.sh"
 
-export DESTHOST=amd64-stable11
-export CAPDDESTHOST=Amd64-Stable11
+export DESTHOST=${ARCH}-${BRANCH}
+CAPDDESTHOST=$(echo ${DESTHOST} | \
+    awk '{print toupper(substr($0,1,1)) substr($0,2,length($0)-1)}')
+export CAPDDESTHOST
 export KERNCONF=GENERIC
 
-export OBJDIR=/var/tmp/jenkins/freebsd/obj/current
+export OBJDIR_BASEDIR=/var/tmp/jenkins/freebsd/obj
+export OBJDIR=${OBJDIR_BASEDIR}/${DESTHOST}
 
-export DESTROOT_BASEDIR=/var
+export DESTROOT_BASEDIR=/
 export DESTROOT_MOUNTTYPE=zfs
-export DESTDIR=${DESTROOT_BASEDIR}/tmp/jenkins/freebsd/destdir/${DESTHOST}
+export DESTDIR_BASEDIR=/var/tmp/jenkins/freebsd/destdir
+export DESTDIR=${DESTROOT_BASEDIR}${DESTDIR_BASEDIR}/${DESTHOST}
 
 export DESTROOTDIR=${DESTDIR}${ROOTDIR}
 
