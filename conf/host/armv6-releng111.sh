@@ -1,22 +1,29 @@
 #! /bin/sh
 
+ARCH=armv6
+BRANCH=releng111
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/armv6.sh
-. "${CONFDIR}/arch/armv6.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
 # shellcheck source=../branch/releng111.sh
-. "${CONFDIR}/branch/releng111.sh"
+. "${CONFDIR}/branch/${BRANCH}.sh"
 
-export DESTHOST=armv6-releng111
-export CAPDDESTHOST=Armv6-Releng111
-export KERNCONF=GENERIC
+export DESTHOST=${ARCH}-${BRANCH}
+CAPDDESTHOST=$(echo ${DESTHOST} | \
+    awk '{print toupper(substr($0,1,1)) substr($0,2,length($0)-1)}')
+export CAPDDESTHOST
+export KERNCONF=BEAGLEBONE # no GENERIC kernel config provided
 
-export OBJDIR=/var/tmp/jenkins/freebsd/obj/releng111
+export OBJDIR_BASEDIR=/var/tmp/jenkins/freebsd/obj
+export OBJDIR=${OBJDIR_BASEDIR}/${DESTHOST}
 
-export DESTROOT_BASEDIR=/var
+export DESTROOT_BASEDIR=/
 export DESTROOT_MOUNTTYPE=zfs
-export DESTDIR=${DESTROOT_BASEDIR}/tmp/jenkins/freebsd/destdir/${DESTHOST}
+export DESTDIR_BASEDIR=/var/tmp/jenkins/freebsd/destdir
+export DESTDIR=${DESTROOT_BASEDIR}${DESTDIR_BASEDIR}/${DESTHOST}
 
 export DESTROOTDIR=${DESTDIR}${ROOTDIR}
 
