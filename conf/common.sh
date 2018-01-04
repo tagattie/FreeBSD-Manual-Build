@@ -1,5 +1,8 @@
 #! /bin/sh
 
+BUILDNAME=$(date "+%Y-%m-%d-%H%M%S")
+export BUILDNAME
+
 export SRCDIR=/usr/src
 export OBJDIR=/usr/obj
 
