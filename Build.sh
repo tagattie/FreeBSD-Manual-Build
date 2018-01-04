@@ -7,10 +7,11 @@ CONFDIR=$(pwd)/conf
 export CONFDIR
 
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|-h hostname [-n] make_target ...]"
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-nj] make_target ...]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -h: Target hostname."
+    echo "  -j: Number of parallel jobs."
     echo "  -n: Dry run."
     exit 0
 } # print_usage()
@@ -24,7 +25,9 @@ setup_make_command() {
     if [ -n "${MAKE_FLAGS_ADD}" ]; then
         MAKE_FLAGS="${MAKE_FLAGS} ${MAKE_FLAGS_ADD}"
     fi
-    MAKE_JOBS_NUM=$NJOBS
+    if [ -z "${MAKE_JOBS_NUM}" ]; then
+        MAKE_JOBS_NUM=$NJOBS
+    fi
     if [ "${1}" = "buildworld" ] || \
            [ "${1}" = "buildkernel" ]; then
         MAKE_FLAGS="-j ${MAKE_JOBS_NUM} ${MAKE_FLAGS}"
@@ -80,12 +83,14 @@ main() {
     if [ $# -eq 0 ]; then
         print_usage
     else
-        while getopts \?h:n OPT; do
+        while getopts \?h:j:n OPT; do
             case ${OPT} in
                 "?")
                     print_usage ;;
                 "h")
                     DESTHOST=${OPTARG} ;;
+                "j")
+                    MAKE_JOBS_NUM=${OPTARG} ;;
                 "n")
                     MAKE_FLAGS="-n ${MAKE_FLAGS}" ;;
             esac
