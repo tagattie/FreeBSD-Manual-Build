@@ -12,7 +12,7 @@ export DESTHOST=mips64-current
 export CAPDDESTHOST=Mips64-Current
 export KERNCONF=ERL
 
-export MAKE_FLAGS_ADD="-DCROSS_TOOLCHAIN"
+export MAKE_FLAGS_ADD="-DCROSS_TOOLCHAIN=mips64-gcc"
 
 export OBJDIR=/var/tmp/jenkins/freebsd/obj/current
 

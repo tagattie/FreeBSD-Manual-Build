@@ -121,7 +121,7 @@ main() {
         fi
 
         print_make_command "${i}"
-        # continue
+        continue
         (cd "${SRCDIR}" && ${MAKE_COMMAND})
         ESTATUS=$?
         if [ $ESTATUS -eq 0 ]; then
