@@ -3,7 +3,8 @@
 export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
-CONFDIR=$(pwd)/conf
+BASEDIR=$(cd "$(dirname "$0")" && pwd)
+CONFDIR=${BASEDIR}/conf
 export CONFDIR
 
 print_usage() {
