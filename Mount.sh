@@ -4,7 +4,8 @@ export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
 CMDNAME=$(basename "$0")
-CONFDIR=$(pwd)/conf
+BASEDIR=$(cd "$(dirname "$0")" && pwd)
+CONFDIR=${BASEDIR}/conf
 export CONFDIR
 
 MOUNT=0
@@ -12,7 +13,7 @@ UNMOUNT=0
 CHECK=0
 
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|-h hostname [-m|-u|-c]]"
+    echo "Usage: ${CMDNAME} [-?|[-h hostname -m|-u|-c]]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -h: Target hostname."
@@ -41,7 +42,7 @@ mount_targets() {
 unmount_targets() {
     for i in ${UNMOUNT_TARGETS}; do
         echo "${CMDNAME}: Unmounting ${i}..."
-        umount "${i}" || ESTATUS=$?
+        umount "${i}" || echo
     done
     return 0
 }
@@ -77,6 +78,9 @@ check_targets_mounted() {
 }
 
 main() {
+    if [ $# -ne 3 ]; then
+        print_usage
+    fi
     while getopts \?h:muc OPT; do
         case ${OPT} in
             "?")
