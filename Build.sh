@@ -8,7 +8,7 @@ CONFDIR=${BASEDIR}/conf
 export CONFDIR
 
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|-h hostname [-nj] make_target ...]"
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-nj][-c file] make_target ...]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -c: Extra configuration file (for overriding defaults)."
