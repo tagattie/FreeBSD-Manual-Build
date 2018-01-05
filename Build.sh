@@ -124,7 +124,7 @@ main() {
         if [ "${i}" = "installworld" ] || \
                [ "${i}" = "installkernel" ] || \
                [ "${i}" = "distribution" ]; then
-            $(pwd)/Mount.sh -h "${DESTHOST}" -c
+            "${BASEDIR}"/Mount.sh -h "${DESTHOST}" -c
         fi
 
         print_make_command "${i}"
