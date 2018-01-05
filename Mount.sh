@@ -13,13 +13,14 @@ UNMOUNT=0
 CHECK=0
 
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|[-h hostname -m|-u|-c]]"
+    echo "Usage: ${CMDNAME} [-?|[-h hostname [-c file] -m|-u|-o]]"
     echo "Options:"
     echo "  -?: Show this message."
+    echo "  -c: Extra configuration file (for overriding defaults)."
     echo "  -h: Target hostname."
     echo "  -m: Mount targets."
     echo "  -u: Unmount targets."
-    echo "  -c: Check if targets are mounted."
+    echo "  -o: Check if targets are mounted (OK)."
     exit 0
 }
 
@@ -78,25 +79,30 @@ check_targets_mounted() {
 }
 
 main() {
-    if [ $# -ne 3 ]; then
+    if [ $# -lt 3 ]; then
         print_usage
     fi
-    while getopts \?h:muc OPT; do
+    while getopts \?h:c:muo OPT; do
         case ${OPT} in
             "?")
                 print_usage ;;
+            "c")
+                EXTRA_CONF=${OPTARG} ;;
             "h")
                 DESTHOST=${OPTARG} ;;
             "m")
                 MOUNT=1 ;;
             "u")
                 UNMOUNT=1 ;;
-            "c")
+            "o")
                 CHECK=1 ;;
         esac
     done
 
     . "${CONFDIR}/host/${DESTHOST}.sh"
+    if [ -n "${EXTRA_CONF}" ]; then
+        . "${EXTRA_CONF}"
+    fi
     setup_target_vars
 
     if [ ${MOUNT} -eq 1 ]; then

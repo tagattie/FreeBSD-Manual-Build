@@ -124,7 +124,11 @@ main() {
         if [ "${i}" = "installworld" ] || \
                [ "${i}" = "installkernel" ] || \
                [ "${i}" = "distribution" ]; then
-            "${BASEDIR}"/Mount.sh -h "${DESTHOST}" -c
+            MOUNT_ARGS="-h ${DESTHOST} -o"
+            if [ -n "${EXTRA_CONF}" ]; then
+                MOUNT_ARGS="${MOUNT_ARGS} -c ${EXTRA_CONF}"
+            fi
+            "${BASEDIR}"/Mount.sh "${MOUNT_ARGS}"
         fi
 
         print_make_command "${i}"
