@@ -27,6 +27,6 @@ MOUNT_TARGET_DIRS="/ /home /tmp \
     /var /var/audit /var/crash /var/db /var/empty /var/log /var/mail \
     /var/run /var/tmp"
 MOUNT_TARGETS=$(for i in ${MOUNT_TARGET_DIRS}; do
-                    echo "${DESTHOST}:${i}:${ROOT_MOUNTTYPE}:${DESTDIR}"
+                    echo "${DESTHOST}:${i}:${DESTDIR_MOUNTTYPE}:${DESTDIR}"
                 done)
 export MOUNT_TARGETS
