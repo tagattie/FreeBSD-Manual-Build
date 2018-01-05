@@ -11,6 +11,7 @@ print_usage() {
     echo "Usage: ${CMDNAME} [-?|-h hostname [-nj] make_target ...]"
     echo "Options:"
     echo "  -?: Show this message."
+    echo "  -c: Extra configuration file (for overriding defaults)."
     echo "  -h: Target hostname."
     echo "  -j: Number of parallel jobs."
     echo "  -n: Dry run."
@@ -84,10 +85,12 @@ main() {
     if [ $# -eq 0 ]; then
         print_usage
     else
-        while getopts \?h:j:n OPT; do
+        while getopts \?c:h:j:n OPT; do
             case ${OPT} in
                 "?")
                     print_usage ;;
+                "c")
+                    EXTRA_CONF=${OPTARG} ;;
                 "h")
                     DESTHOST=${OPTARG} ;;
                 "j")
@@ -104,6 +107,9 @@ main() {
     MAKE_TARGETS=$*
 
     . "${CONFDIR}/host/${DESTHOST}.sh"
+    if [ -n "${EXTRA_CONF}" ]; then
+        . "${EXTRA_CONF}"
+    fi
 
     if [ -z "${SRCDIR}" ] || \
            [ -z "${DESTDIR}" ]; then
