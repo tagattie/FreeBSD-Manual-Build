@@ -8,9 +8,9 @@ export LOCALBASE=/usr/local
 export SRCDIR=/usr/src
 export OBJDIR=/usr/obj
 
-export DESTROOT_BASEDIR=/mnt
-export DESTROOT_MOUNTTYPE=nfs
-export DESTDIR=${DESTROOT_BASEDIR}/${DESTHOST}
+export DESTDIR_BASEDIR=/
+export DESTDIR_MOUNTTYPE=zfs
+export DESTDIR=${DESTDIR_BASEDIR}
 
 export ROOTDIR=/
 export BOOTDIR=/boot

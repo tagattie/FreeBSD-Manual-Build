@@ -20,11 +20,9 @@ export KERNCONF=BEAGLEBONE # no GENERIC kernel config provided
 export OBJDIR_BASEDIR=/var/tmp/jenkins/freebsd/obj
 export OBJDIR=${OBJDIR_BASEDIR}/${DESTHOST}
 
-export DESTROOT_BASEDIR=/
-export DESTROOT_MOUNTTYPE=zfs
 export DESTDIR_BASEDIR=/var/tmp/jenkins/freebsd/destdir
-export DESTDIR=${DESTROOT_BASEDIR}${DESTDIR_BASEDIR}/${DESTHOST}
+export DESTDIR_MOUNTTYPE=zfs
+export DESTDIR=${DESTDIR_BASEDIR}/${DESTHOST}
 
-export DESTROOTDIR=${DESTDIR}${ROOTDIR}
-
-export MOUNT_TARGETS="localhost:${ROOTDIR}:${DESTROOT_MOUNTTYPE}:${DESTROOT_BASEDIR}"
+# dummy mount targets to pass check
+export MOUNT_TARGETS="localhost:${ROOTDIR}:${DESTDIR_MOUNTTYPE}:${ROOTDIR}"
