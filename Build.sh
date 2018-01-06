@@ -5,7 +5,8 @@ export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
 BASEDIR=$(cd "$(dirname "$0")" && pwd)
 CONFDIR=${BASEDIR}/conf
-export CONFDIR
+
+CMDNAME=$(basename "$0")
 
 print_usage() {
     echo "Usage: ${CMDNAME} [-?|-h hostname [-nj][-c file] make_target ...]"
@@ -19,9 +20,7 @@ print_usage() {
 } # print_usage()
 
 setup_make_command() {
-    SUDO="sudo"
     TIME="time -l"
-    MAKE="make"
 
     MAKE_FLAGS="-DDB_FROM_SRC -DNO_FSCHG"
     if [ -n "${MAKE_FLAGS_ADD}" ]; then
@@ -82,6 +81,7 @@ print_finish_message() {
 } # print_finish_message()
 
 main() {
+    COMMAND="$0 $*"
     if [ $# -eq 0 ]; then
         print_usage
     else
@@ -101,9 +101,7 @@ main() {
         done
     fi
 
-    COMMAND="$0 $*"
-    CMDNAME=$(basename "$0")
-    shift $((OPTIND - 1))
+    shift $((OPTIND-1))
     MAKE_TARGETS=$*
 
     . "${CONFDIR}/host/${DESTHOST}.sh"
