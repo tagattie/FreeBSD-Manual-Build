@@ -14,13 +14,13 @@ export DESTDIR=${DESTDIR_BASEDIR}
 
 export ROOTDIR=/
 export BOOTDIR=/boot
-export FATBOOTDIR=/boot/msdos
-export EFIBOOTDIR=/boot/efi
+export BOOTFATDIR=/boot/msdos
+export BOOTEFIDIR=/boot/efi
 
 NJOBS=$(sysctl hw.ncpu|awk '{print $NF}')
 export NJOBS
 
-# these functions will be overridden by host-specific conf
+# these functions will be overridden by board-specific conf
 do_post_installkernel() {
     return 0
 }
