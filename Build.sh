@@ -146,7 +146,7 @@ main() {
         fi
 
         FINISHDATE=$(date)
-        print_finish_message "${1}"
+        print_finish_message "${i}"
     done
 
     return 0
