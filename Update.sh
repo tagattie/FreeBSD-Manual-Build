@@ -28,7 +28,7 @@ main() {
         done
     fi
 
-    shift $((OPTIND - 1))
+    shift $((OPTIND-1))
     BRANCH=$*
 
     # shellcheck source=./conf/common.sh
