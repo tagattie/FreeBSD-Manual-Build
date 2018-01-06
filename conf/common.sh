@@ -1,5 +1,9 @@
 #! /bin/sh
 
+export MAKE=make
+export SUDO=sudo
+export SVN=svnlite
+
 BUILDNAME=$(date "+%Y-%m-%d-%H%M%S")
 export BUILDNAME
 
