@@ -113,7 +113,7 @@ populate_root_partition() {
             --exclude="${BOOTEFIDIR_DEST}" \
             --stats \
             "${ROOTDIR_DEST}/" \
-            "${WORKDIR}/${BSD_PART_LABEL}"
+            "${WORKDIR}/${BSD_PART_FSLABEL}"
     return $?
 } # populate_root_partition()
 
