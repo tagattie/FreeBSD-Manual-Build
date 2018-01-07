@@ -74,7 +74,7 @@ create_and_mount_boot_partition() {
 
 populate_boot_partition() {
     ${SUDO} rsync \
-            -av \
+            -rlDv \
             --delete \
             --stats \
             "${BOOTEFIDIR_DEST}/" \
