@@ -120,10 +120,10 @@ populate_root_partition() {
 copy_overlay_files() {
     for i in ${OVERLAY_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
-                "${BASEDIR}/overlays/${BOARD_NAME}/${i}" \
-                "${WORKDIR}/${BSD_PART_LABEL}/${i}"
+                "${BASEDIR}/overlay/${BOARD_NAME}/${i}" \
+                "${WORKDIR}/${BSD_PART_FSLABEL}/${i}"
     done
-    ${SUDO} touch "${WORKDIR}/${BSD_PART_LABEL}/${FIRST_BOOT_SENTINEL}"
+    ${SUDO} touch "${WORKDIR}/${BSD_PART_FSLABEL}/${FIRST_BOOT_SENTINEL}"
     return 0
 } # copy_overlay_files()
 
