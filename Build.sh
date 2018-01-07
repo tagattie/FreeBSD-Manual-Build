@@ -9,10 +9,11 @@ CONFDIR=${BASEDIR}/conf
 CMDNAME=$(basename "$0")
 
 print_usage() {
-    echo "Usage: ${CMDNAME} [-?|-h hostname [-nj][-c file] make_target ...]"
+    echo "Usage: ${CMDNAME} [-?|-h hostname [-dn][-j num][-c file] make_target ...]"
     echo "Options:"
     echo "  -?: Show this message."
     echo "  -c: Extra configuration file (for overriding defaults)."
+    echo "  -d: Don't clean before build (for debugging)."
     echo "  -h: Target hostname."
     echo "  -j: Number of parallel jobs."
     echo "  -n: Dry run."
@@ -22,7 +23,7 @@ print_usage() {
 setup_make_command() {
     TIME="time -l"
 
-    MAKE_FLAGS="-DDB_FROM_SRC -DNO_FSCHG"
+    MAKE_FLAGS="-DDB_FROM_SRC -DNO_FSCHG ${MAKE_FLAGS}"
     if [ -n "${MAKE_FLAGS_ADD}" ]; then
         MAKE_FLAGS="${MAKE_FLAGS} ${MAKE_FLAGS_ADD}"
     fi
@@ -85,12 +86,14 @@ main() {
     if [ $# -eq 0 ]; then
         print_usage
     else
-        while getopts \?c:h:j:n OPT; do
+        while getopts \?c:h:j:nd OPT; do
             case ${OPT} in
                 "?")
                     print_usage ;;
                 "c")
                     EXTRA_CONF=${OPTARG} ;;
+                "d")
+                    MAKE_FLAGS="-DNO_CLEAN" ;;
                 "h")
                     DESTHOST=${OPTARG} ;;
                 "j")
