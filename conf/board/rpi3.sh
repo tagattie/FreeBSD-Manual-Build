@@ -16,8 +16,8 @@ export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 do_post_installworld() {
     BOOT_FILES="boot1.efi"
     echo "${CMDNAME}: Copying boot files to EFI partition."
-    mkdir -p "${BOOTEFIDIR_DEST}/EFI/BOOT"
-    install -c "${BOOTDIR_DEST}/${BOOT_FILES}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootaa64.efi"
+    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/EFI/BOOT"
+    ${SUDO} install -c "${BOOTDIR_DEST}/${BOOT_FILES}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootaa64.efi"
     return 0
 }
 
@@ -32,12 +32,12 @@ install_boot() {
     DTB_FILES="bcm2710-rpi-3-b.dtb \
         overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
     for i in ${UBOOT_FILES}; do
-        install -c "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
+        ${SUDO} install -c "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
     done
-    mkdir -p "${BOOTEFIDIR_DEST}/overlays"
+    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
     (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
     for i in ${DTB_FILES}; do
-        fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
+        ${SUDO} fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
     done
     return 0
 }
