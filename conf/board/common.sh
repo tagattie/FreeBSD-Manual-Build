@@ -47,3 +47,18 @@ export OVERLAY_FILE_MODE=644
 export OVERLAY_FILE_OWNER=root
 export OVERLAY_FILE_GROUP=wheel
 export FIRST_BOOT_SENTINEL=/firstboot
+
+setup_boot_partition() {
+    create_and_mount_boot_partition
+    populate_boot_partition
+    unmount_boot_partition
+    return 0
+}
+
+setup_bsd_partition() {
+    create_and_mount_bsd_partition
+    populate_root_partition
+    copy_overlay_files
+    unmount_bsd_partition
+    return 0
+}
