@@ -75,7 +75,6 @@ create_and_mount_boot_partition() {
 populate_boot_partition() {
     ${SUDO} rsync \
             -rlDv \
-            --delete \
             --stats \
             "${BOOTEFIDIR_DEST}/" \
             "${WORKDIR}/${BOOT_PART_LABEL}"
@@ -111,7 +110,6 @@ create_and_mount_bsd_partition() {
 populate_root_partition() {
     ${SUDO} rsync \
             -av \
-            --delete \
             --exclude="${BOOTEFIDIR_DEST}" \
             --stats \
             "${ROOTDIR_DEST}/" \
