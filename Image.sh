@@ -63,7 +63,7 @@ create_and_mount_boot_partition() {
         -F "${BOOT_PART_FS}" \
         "/dev/${MD_DEVNAME}s1"
     # Mount the FAT16 filesystem and copy necessary files onto it
-    mkdir -p "${WORKDIR}/${BOOT_PART_LABEL}"
+    ${SUDO} mkdir -p "${WORKDIR}/${BOOT_PART_LABEL}"
     ${SUDO} \
         mount \
         -t "${BOOT_PART_FSTYPE}" \
@@ -84,7 +84,7 @@ populate_boot_partition() {
 
 unmount_boot_partition() {
     ${SUDO} umount "${WORKDIR}/${BOOT_PART_LABEL}"
-    rmdir "${WORKDIR}/${BOOT_PART_LABEL}"
+    ${SUDO} rmdir "${WORKDIR}/${BOOT_PART_LABEL}"
     return 0
 } # unmount_boot_partition()
 
@@ -101,7 +101,7 @@ create_and_mount_bsd_partition() {
     # Create UFS filesystem in the FreeBSD slice
     ${SUDO} newfs -U -j -t -L "${BSD_PART_FSLABEL}" "/dev/${MD_DEVNAME}s2a"
     # Mount the UFS filesystem and copy distribution onto it
-    mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}"
+    ${SUDO} mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}"
     ${SUDO} mount -t ufs \
             "/dev/${MD_DEVNAME}s2a" \
             "${WORKDIR}/${BSD_PART_FSLABEL}"
@@ -131,7 +131,7 @@ copy_overlay_files() {
 
 unmount_bsd_partition() {
     ${SUDO} umount "${WORKDIR}/${BSD_PART_FSLABEL}"
-    rmdir "${WORKDIR}/${BSD_PART_FSLABEL}"
+    ${SUDO} rmdir "${WORKDIR}/${BSD_PART_FSLABEL}"
     return 0
 } # unmount_bsd_partition()
 
