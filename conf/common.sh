@@ -4,6 +4,9 @@ export MAKE=make
 export SUDO=sudo
 export SVN=svnlite
 
+export INSTALL_FILE="install -c -m 444"
+export INSTALL_EXEC="install -c -m 755"
+
 BUILDNAME=$(date "+%Y-%m-%d-%H%M%S")
 export BUILDNAME
 

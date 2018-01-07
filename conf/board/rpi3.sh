@@ -17,7 +17,7 @@ do_post_installworld() {
     BOOT_FILES="boot1.efi"
     echo "${CMDNAME}: Copying boot files to EFI partition."
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/EFI/BOOT"
-    ${SUDO} install -c "${BOOTDIR_DEST}/${BOOT_FILES}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootaa64.efi"
+    ${SUDO} ${INSTALL_FILE} "${BOOTDIR_DEST}/${BOOT_FILES}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootaa64.efi"
     return 0
 }
 
@@ -32,7 +32,7 @@ install_boot() {
     DTB_FILES="bcm2710-rpi-3-b.dtb \
         overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
     for i in ${UBOOT_FILES}; do
-        ${SUDO} install -c "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
+        ${SUDO} ${INSTALL_FILE} "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
     done
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
     (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
