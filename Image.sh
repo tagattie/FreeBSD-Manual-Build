@@ -109,7 +109,7 @@ create_and_mount_bsd_partition() {
 
 populate_root_partition() {
     ${SUDO} rsync \
-            -av \
+            -aHv \
             --exclude="${BOOTEFIDIR_DEST}" \
             --stats \
             "${ROOTDIR_DEST}/" \
