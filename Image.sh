@@ -45,7 +45,7 @@ create_partition_scheme() {
     return 0
 } # create_partition_scheme()
 
-create_and_mount_boot_partition() {
+create_boot_partition() {
     # Create FAT32(LBA-addressable) partition for boot (1st slice)
     ${SUDO} \
         gpart add \
@@ -62,7 +62,21 @@ create_and_mount_boot_partition() {
         -L "${BOOT_PART_LABEL}" \
         -F "${BOOT_PART_FS}" \
         "/dev/${MD_DEVNAME}s1"
-    # Mount the FAT16 filesystem and copy necessary files onto it
+    return 0
+} # create_boot_partition()
+
+create_boot_filesystem() {
+    # Create FAT16 filesystem in the boot slice
+    ${SUDO} \
+        newfs_msdos \
+        -L "${BOOT_PART_LABEL}" \
+        -F "${BOOT_PART_FS}" \
+        "/dev/${MD_DEVNAME}s1"
+    return 0
+} # create_boot_filesystem()
+
+mount_boot_partition() {
+    # Mount the partition as the FAT16 filesystem
     ${SUDO} mkdir -p "${WORKDIR}/${BOOT_PART_LABEL}"
     ${SUDO} \
         mount \
@@ -70,7 +84,7 @@ create_and_mount_boot_partition() {
         -l "/dev/${MD_DEVNAME}s1" \
         "${WORKDIR}/${BOOT_PART_LABEL}"
     return 0
-} # create_and_mount_boot_partition()
+} # mount_boot_partition()
 
 unmount_boot_partition() {
     ${SUDO} umount "${WORKDIR}/${BOOT_PART_LABEL}"
@@ -78,7 +92,7 @@ unmount_boot_partition() {
     return 0
 } # unmount_boot_partition()
 
-create_and_mount_bsd_partition() {
+create_bsd_partition() {
     # Create FreeBSD partition (2nd slice)
     ${SUDO} gpart add -t "${BSD_PART_TYPE}" "${MD_DEVNAME}"
     # Set partition scheme of the FreeBSD slice
@@ -89,15 +103,23 @@ create_and_mount_bsd_partition() {
         -a "${BSD_PART_FSALIGN}" \
         -t "${BSD_PART_FSTYPE}" \
         "${MD_DEVNAME}s2"
+    return 0
+} # create_bsd_partition()
+
+create_bsd_filesystem() {
     # Create UFS filesystem in the FreeBSD slice
     ${SUDO} newfs -U -j -t -L "${BSD_PART_FSLABEL}" "/dev/${MD_DEVNAME}s2a"
-    # Mount the UFS filesystem and copy distribution onto it
+    return 0
+} # create_bsd_filesystem()
+
+mount_bsd_partition() {
+    # Mount the UFS filesystem
     ${SUDO} mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}"
     ${SUDO} mount -t ufs \
             "/dev/${MD_DEVNAME}s2a" \
             "${WORKDIR}/${BSD_PART_FSLABEL}"
     return 0
-}
+} # mount_bsd_partition()
 
 copy_overlay_files() {
     echo "${CMDNAME}: Copying overlay files to root partition."

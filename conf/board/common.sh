@@ -57,14 +57,18 @@ create_placeholder_for_boot_partition() {
 }
 
 setup_boot_partition() {
-    create_and_mount_boot_partition
+    create_boot_partition
+    create_boot_filesystem
+    mount_boot_partition
     populate_boot_partition
     unmount_boot_partition
     return 0
 }
 
 setup_bsd_partition() {
-    create_and_mount_bsd_partition
+    create_bsd_partition
+    create_bsd_filesystem
+    mount_bsd_partition
     copy_overlay_files
     create_placeholder_for_boot_partition
     populate_root_partition
