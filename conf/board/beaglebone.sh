@@ -22,6 +22,7 @@ do_post_installkernel() {
 do_post_installworld() {
     UBLDR_FILES="ubldr ubldr.bin"
     echo "${CMDNAME}: Copying loader files to FAT partition."
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     for i in ${UBLDR_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
                 "${BOOTDIR_DEST}/${i}" \
@@ -34,6 +35,7 @@ install_boot() {
     echo "${CMDNAME}: Copying boot files to FAT partition."
     UBOOT_MASTERDIR=${LOCALBASE}/share/u-boot/u-boot-beaglebone
     UBOOT_FILES="MLO u-boot.img"
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     for i in ${UBOOT_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
                 "${UBOOT_MASTERDIR}/${i}" \

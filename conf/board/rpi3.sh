@@ -28,16 +28,19 @@ install_boot() {
         fixup.dat fixup_cd.dat fixup_x.dat \
         start.elf start_cd.elf start_x.elf \
         u-boot.bin"
-    DTB_REPO="https://github.com/raspberrypi/firmware/blob/master/boot"
-    DTB_FILES="bcm2710-rpi-3-b.dtb \
-        overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
+    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}"
     for i in ${UBOOT_FILES}; do
         ${SUDO} ${INSTALL_FILE} "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
     done
+
+    DTB_REPO="https://github.com/raspberrypi/firmware/blob/master/boot"
+    DTB_FILES="bcm2710-rpi-3-b.dtb \
+        overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
     (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
     for i in ${DTB_FILES}; do
         ${SUDO} fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
     done
+
     return 0
 }
