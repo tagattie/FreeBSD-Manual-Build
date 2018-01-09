@@ -37,3 +37,9 @@ do_post_installworld() {
 install_boot() {
     return 0
 }
+setup_boot_partition() {
+    return 0
+}
+setup_bsd_partition() {
+    return 0
+}
