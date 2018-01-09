@@ -15,6 +15,7 @@ export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 
 do_post_installkernel() {
     echo "${CMDNAME}: Copying kernel files to FAT partition."
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     (cd "${BOOTFATDIR_DEST}" &&
          ${SUDO} rm -rf kernel.old &&
          ${SUDO} mv -f kernel kernel.old &&
