@@ -41,20 +41,21 @@ create_image_file() {
 
 # Create partition scheme
 create_partition_scheme() {
-    gpart create -s "${PART_SCHEME}" "${MD_DEVNAME}"
+    ${SUDO} gpart create -s "${PART_SCHEME}" "${MD_DEVNAME}"
     return 0
 } # create_partition_scheme()
 
 create_and_mount_boot_partition() {
     # Create FAT32(LBA-addressable) partition for boot (1st slice)
-    gpart add \
-          -a "${SECTORS_PER_TRACK}" \
-          -b "${START_SECTOR}" \
-          -s $((BOOT_PART_SIZE/BYTES_PER_SECTOR-BOOT_PART_SECTOR_MARGIN)) \
-          -t "${BOOT_PART_TYPE}" \
-          "${MD_DEVNAME}"
+    ${SUDO} \
+        gpart add \
+        -a "${SECTORS_PER_TRACK}" \
+        -b "${START_SECTOR}" \
+        -s $((BOOT_PART_SIZE/BYTES_PER_SECTOR-BOOT_PART_SECTOR_MARGIN)) \
+        -t "${BOOT_PART_TYPE}" \
+        "${MD_DEVNAME}"
     # Make the slice (boot slice) active (bootable)
-    gpart set -a active -i 1 "${MD_DEVNAME}"
+    ${SUDO} gpart set -a active -i 1 "${MD_DEVNAME}"
     # Create FAT16 filesystem in the boot slice
     ${SUDO} \
         newfs_msdos \
@@ -88,14 +89,15 @@ unmount_boot_partition() {
 
 create_and_mount_bsd_partition() {
     # Create FreeBSD partition (2nd slice)
-    gpart add -t "${BSD_PART_TYPE}" "${MD_DEVNAME}"
+    ${SUDO} gpart add -t "${BSD_PART_TYPE}" "${MD_DEVNAME}"
     # Set partition scheme of the FreeBSD slice
-    gpart create -s "${BSD_PART_SCHEME}" "${MD_DEVNAME}s2"
+    ${SUDO} gpart create -s "${BSD_PART_SCHEME}" "${MD_DEVNAME}s2"
     # Add freebsd-ufs partition (make alignment to 64KiB)
-    gpart add \
-          -a "${BSD_PART_FSALIGN}" \
-          -t "${BSD_PART_FSTYPE}" \
-          "${MD_DEVNAME}s2"
+    ${SUDO} \
+        gpart add \
+        -a "${BSD_PART_FSALIGN}" \
+        -t "${BSD_PART_FSTYPE}" \
+        "${MD_DEVNAME}s2"
     # Create UFS filesystem in the FreeBSD slice
     ${SUDO} newfs -U -j -t -L "${BSD_PART_FSLABEL}" "/dev/${MD_DEVNAME}s2a"
     # Mount the UFS filesystem and copy distribution onto it
