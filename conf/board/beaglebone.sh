@@ -14,8 +14,8 @@ export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 do_post_installkernel() {
     echo "${CMDNAME}: Making necessary DTB file hard links."
     (cd "${BOOTDIR_DEST}/dtb" && \
-         ln -f beaglebone.dtb am335x-bone.dtb &&
-         ln -f beaglebone-black.dtb am335x-boneblack.dtb)
+         ${SUDO} ln -f beaglebone.dtb am335x-bone.dtb &&
+         ${SUDO} ln -f beaglebone-black.dtb am335x-boneblack.dtb)
     return 0
 }
 
