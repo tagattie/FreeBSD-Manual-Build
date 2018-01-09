@@ -99,6 +99,17 @@ create_and_mount_bsd_partition() {
     return 0
 }
 
+copy_overlay_files() {
+    echo "${CMDNAME}: Copying overlay files to root partition."
+    for i in ${OVERLAY_FILES}; do
+        ${SUDO} ${INSTALL_FILE} \
+                "${BASEDIR}/overlay/${BOARD_NAME}/${i}" \
+                "${ROOTDIR_DEST}"
+    done
+    ${SUDO} touch "${WORKDIR}/${BSD_PART_FSLABEL}/${FIRST_BOOT_SENTINEL}"
+    return 0
+} # copy_overlay_files()
+
 populate_root_partition() {
     ${SUDO} rsync \
             -aHv \
@@ -109,16 +120,6 @@ populate_root_partition() {
             "${WORKDIR}/${BSD_PART_FSLABEL}"
     return $?
 } # populate_root_partition()
-
-copy_overlay_files() {
-    for i in ${OVERLAY_FILES}; do
-        ${SUDO} ${INSTALL_FILE} \
-                "${BASEDIR}/overlay/${BOARD_NAME}/${i}" \
-                "${WORKDIR}/${BSD_PART_FSLABEL}/${i}"
-    done
-    ${SUDO} touch "${WORKDIR}/${BSD_PART_FSLABEL}/${FIRST_BOOT_SENTINEL}"
-    return 0
-} # copy_overlay_files()
 
 unmount_bsd_partition() {
     ${SUDO} umount "${WORKDIR}/${BSD_PART_FSLABEL}"

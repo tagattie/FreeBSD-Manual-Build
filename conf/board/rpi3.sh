@@ -55,6 +55,6 @@ populate_boot_partition() {
 } # populate_boot_partition()
 
 create_placeholder_for_boot_partition() {
-    ${SUDO} mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}/${BOOTEFIDIR}"
+    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}"
     return 0
 }

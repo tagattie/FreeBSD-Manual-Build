@@ -71,6 +71,6 @@ populate_boot_partition() {
 } # populate_boot_partition()
 
 create_placeholder_for_boot_partition() {
-    ${SUDO} mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}/${BOOTFATDIR}"
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     return 0
 }
