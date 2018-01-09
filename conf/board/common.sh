@@ -52,6 +52,10 @@ populate_boot_partition() {
     return 0
 }
 
+create_placeholder_for_boot_partition() {
+    return 0
+}
+
 setup_boot_partition() {
     create_and_mount_boot_partition
     populate_boot_partition
@@ -63,6 +67,7 @@ setup_bsd_partition() {
     create_and_mount_bsd_partition
     populate_root_partition
     copy_overlay_files
+    create_placeholder_for_boot_partition
     unmount_bsd_partition
     return 0
 }

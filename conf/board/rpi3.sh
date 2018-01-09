@@ -53,3 +53,8 @@ populate_boot_partition() {
             "${WORKDIR}/${BOOT_PART_LABEL}"
     return $?
 } # populate_boot_partition()
+
+create_placeholder_for_boot_partition() {
+    ${SUDO} mkdir -p "${WORKDIR}/${BSD_PART_FSLABEL}/${BOOTEFIDIR}"
+    return 0
+}
