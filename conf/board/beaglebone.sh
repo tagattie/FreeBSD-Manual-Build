@@ -4,6 +4,8 @@
 # shellcheck source=./common.sh
 . "${CONFDIR}/board/common.sh"
 
+export BOARD_NAME=beaglebone
+
 # Image size is 1GiB
 export IMG_SIZE=$((1*GiB))
 export IMG_SIZEMB=$((IMG_SIZE/MiB))
