@@ -3,10 +3,10 @@
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
-# shellcheck source=../arch/aarch64.sh
-. "${CONFDIR}/arch/aarch64.sh"
+# shellcheck source=../arch/armv6.sh
+. "${CONFDIR}/arch/armv6.sh"
 # shellcheck source=../branch/current.sh
-. "${CONFDIR}/branch/current.sh"
+. "${CONFDIR}/branch/releng111.sh"
 # shellcheck source=../board/beaglebone.sh
 . "${CONFDIR}/board/beaglebone.sh"
 
