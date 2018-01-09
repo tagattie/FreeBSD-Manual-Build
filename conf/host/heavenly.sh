@@ -5,7 +5,7 @@
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/armv6.sh
 . "${CONFDIR}/arch/armv6.sh"
-# shellcheck source=../branch/current.sh
+# shellcheck source=../branch/releng111.sh
 . "${CONFDIR}/branch/releng111.sh"
 # shellcheck source=../board/beaglebone.sh
 . "${CONFDIR}/board/beaglebone.sh"
