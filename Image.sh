@@ -102,8 +102,8 @@ create_and_mount_bsd_partition() {
 populate_root_partition() {
     ${SUDO} rsync \
             -aHv \
-            --exclude="${BOOTFATDIR_DEST}" \
-            --exclude="${BOOTEFIDIR_DEST}" \
+            --exclude="$(echo "${BOOTFATDIR}" | sed -e 's|^/||')" \
+            --exclude="$(echo "${BOOTEFIDIR}" | sed -e 's|^/||')" \
             --stats \
             "${ROOTDIR_DEST}/" \
             "${WORKDIR}/${BSD_PART_FSLABEL}"
