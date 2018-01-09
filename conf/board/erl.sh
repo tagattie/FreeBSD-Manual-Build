@@ -16,11 +16,13 @@ export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 do_post_installkernel() {
     echo "${CMDNAME}: Copying kernel files to FAT partition."
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
-    (cd "${BOOTFATDIR_DEST}" &&
-         ${SUDO} rm -rf kernel.old &&
-         ([ -d kernel ] && ${SUDO} mv -f kernel kernel.old) &&
-         cd "${BOOTDIR_DEST}" &&
-         ${SUDO} rsync -rlDv --stats kernel "${BOOTFATDIR_DEST}")
+    cd "${BOOTFATDIR_DEST}" || exit 1
+    ${SUDO} rm -rf kernel.old
+    if [ -d kernel ]; then
+        ${SUDO} mv -f kernel kernel.old
+    fi
+    cd "${BOOTDIR_DEST}" || exit 1
+    ${SUDO} rsync -rlDv --stats kernel "${BOOTFATDIR_DEST}"
     return 0
 }
 
