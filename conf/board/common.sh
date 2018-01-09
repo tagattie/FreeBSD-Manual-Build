@@ -48,6 +48,10 @@ export OVERLAY_FILE_OWNER=root
 export OVERLAY_FILE_GROUP=wheel
 export FIRST_BOOT_SENTINEL=/firstboot
 
+populate_boot_partition() {
+    return 0
+}
+
 setup_boot_partition() {
     create_and_mount_boot_partition
     populate_boot_partition

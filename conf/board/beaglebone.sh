@@ -45,3 +45,13 @@ install_boot() {
     done
     return 0
 }
+
+populate_boot_partition() {
+    ${SUDO} \
+        rsync \
+        -rlDv \
+        --stats \
+        "${BOOTFATDIR_DEST}/" \
+        "${WORKDIR}/${BOOT_PART_LABEL}"
+    return $?
+} # populate_boot_partition()

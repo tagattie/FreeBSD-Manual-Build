@@ -72,15 +72,6 @@ create_and_mount_boot_partition() {
     return 0
 } # create_and_mount_boot_partition()
 
-populate_boot_partition() {
-    ${SUDO} rsync \
-            -rlDv \
-            --stats \
-            "${BOOTEFIDIR_DEST}/" \
-            "${WORKDIR}/${BOOT_PART_LABEL}"
-    return $?
-} # populate_boot_partition()
-
 unmount_boot_partition() {
     ${SUDO} umount "${WORKDIR}/${BOOT_PART_LABEL}"
     ${SUDO} rmdir "${WORKDIR}/${BOOT_PART_LABEL}"
