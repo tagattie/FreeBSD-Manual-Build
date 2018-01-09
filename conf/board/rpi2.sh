@@ -13,9 +13,21 @@ export IMG_SIZEMB=$((IMG_SIZE/MiB))
 export BOOT_PART_SIZE=$((32*MiB))
 export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 
+do_post_installkernel() {
+    echo "${CMDNAME}: Copying DTB files to FAT partition."
+    DTB_FILES="dtb/rpi2.dtb"
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
+    for i in ${DTB_FILES}; do
+        ${SUDO} ${INSTALL_FILE} \
+                "${BOOTDIR_DEST}/${i}" \
+                "${BOOTFATDIR_DEST}"
+    done
+    return 0
+}
+
 do_post_installworld() {
     echo "${CMDNAME}: Copying loader files to FAT partition."
-    UBLDR_FILES="ubldr ubldr.bin dtb/rpi2.dtb"
+    UBLDR_FILES="ubldr ubldr.bin"
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     for i in ${UBLDR_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
