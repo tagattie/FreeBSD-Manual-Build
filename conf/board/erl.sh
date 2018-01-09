@@ -18,7 +18,7 @@ do_post_installkernel() {
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     (cd "${BOOTFATDIR_DEST}" &&
          ${SUDO} rm -rf kernel.old &&
-         ${SUDO} mv -f kernel kernel.old &&
+         ([ -d kernel ] && ${SUDO} mv -f kernel kernel.old) &&
          cd "${BOOTDIR_DEST}" &&
          ${SUDO} rsync -rlDv --stats kernel "${BOOTFATDIR_DEST}")
     return 0
