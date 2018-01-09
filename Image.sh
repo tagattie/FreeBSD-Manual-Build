@@ -15,7 +15,6 @@ print_usage() {
     echo "  -?: Show this message."
     echo "  -c: Extra configuration file (for overriding defaults)."
     echo "  -h: Target hostname."
-
     exit 0
 } # print_usage()
 

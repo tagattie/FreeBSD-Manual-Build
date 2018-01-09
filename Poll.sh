@@ -12,7 +12,6 @@ print_usage() {
     echo "Usage: ${CMDNAME} [-?] branch"
     echo "Options:"
     echo "  -?: Show this message."
-
     exit 0
 } # print_usage()
 
@@ -41,6 +40,7 @@ main() {
     fi
 
     ${SVN} status -qu "${SRCDIR}" | wc -l
+
     return $?
 } # main()
 

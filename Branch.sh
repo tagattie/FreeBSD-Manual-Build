@@ -12,7 +12,6 @@ print_usage() {
     echo "Usage: ${CMDNAME} [-?] hostname"
     echo "Options:"
     echo "  -?: Show this message."
-
     exit 0
 } # print_usage()
 
@@ -34,6 +33,7 @@ main() {
     . "${CONFDIR}/host/${DESTHOST}.sh"
 
     echo "${BRANCH}"
+
     return $?
 } # main()
 

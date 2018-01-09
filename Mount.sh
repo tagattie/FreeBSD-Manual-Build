@@ -3,10 +3,10 @@
 export LANG=C
 export PATH=/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/sbin:/usr/local/bin
 
-CMDNAME=$(basename "$0")
 BASEDIR=$(cd "$(dirname "$0")" && pwd)
 CONFDIR=${BASEDIR}/conf
-export CONFDIR
+
+CMDNAME=$(basename "$0")
 
 MOUNT=0
 UNMOUNT=0
@@ -22,7 +22,7 @@ print_usage() {
     echo "  -u: Unmount targets."
     echo "  -o: Check if targets are mounted (OK)."
     exit 0
-}
+} # print_usage()
 
 mount_targets() {
     for i in ${MOUNT_TARGETS}; do
@@ -38,15 +38,15 @@ mount_targets() {
         mount -t "${fstype}" "${host}:${dir}" "${destbase}${dir}"
     done
     return 0
-}
+} # mount_targets()
 
 unmount_targets() {
     for i in ${UNMOUNT_TARGETS}; do
         echo "${CMDNAME}: Unmounting ${i}..."
-        umount "${i}" || echo
+        umount "${i}" || echo ignore
     done
     return 0
-}
+} # unmount_targets()
 
 setup_target_vars() {
     MOUNTED_TARGETS=$(for i in ${MOUNT_TARGETS}; do
@@ -62,7 +62,7 @@ setup_target_vars() {
                           echo "${i}"
                       done | sort -r)
     return 0
-}
+} # setup_target_vars()
 
 check_targets_mounted() {
     echo "${CMDNAME}: Checking if target filesystems are mounted."
@@ -76,7 +76,7 @@ check_targets_mounted() {
         exit 1
     fi
     return 0
-}
+} # check_targets_mounted()
 
 main() {
     if [ $# -lt 3 ]; then
@@ -112,7 +112,8 @@ main() {
     elif [ ${CHECK} -eq 1 ]; then
         check_targets_mounted
     fi
+
     return 0
-}
+} # main()
 
 main "${@}"

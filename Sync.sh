@@ -3,9 +3,10 @@
 export LANG=C
 export PATH=/usr/local/bin:/usr/bin:/bin
 
+CMDNAME=$(basename "$0")
+
 RSYNC_FLAGS="-vaz --delete --stats"
 
-CMDNAME=$(basename $0)
 while getopts ?h:son OPT; do
     case ${OPT} in
         "?")
@@ -29,8 +30,8 @@ while getopts ?h:son OPT; do
 done
 
 if [ -z "${HOSTNAME}" ]; then
-   echo "Error: You must specify hostname of sync destination."
-   exit 1
+    echo "Error: You must specify hostname of sync destination."
+    exit 1
 fi
 
 if [ -z "${SYNC_DIR}" ]; then
