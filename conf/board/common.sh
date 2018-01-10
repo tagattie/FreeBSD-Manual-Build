@@ -64,9 +64,9 @@ setup_bsd_partition() {
     create_bsd_partition
     create_bsd_filesystem
     mount_bsd_partition
+    populate_root_partition
     copy_overlay_files
     create_placeholder_for_boot_partition
-    populate_root_partition
     unmount_bsd_partition
     return 0
 }
