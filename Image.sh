@@ -128,7 +128,7 @@ copy_overlay_files() {
                 "${BASEDIR}/overlay/${BOARD_NAME}/${i}" \
                 "${ROOTDIR_DEST}"
     done
-    ${SUDO} touch "${WORKDIR}/${BSD_PART_FSLABEL}/${FIRST_BOOT_SENTINEL}"
+    ${SUDO} touch "${ROOTDIR_DEST}/${FIRST_BOOT_SENTINEL}"
     return 0
 } # copy_overlay_files()
 
