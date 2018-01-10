@@ -7,7 +7,7 @@
 export BOARD_NAME=erl
 
 # Image size is 2GiB
-export IMG_SIZE=$((2*GiB))
+export IMG_SIZE=$((3*GiB))
 export IMG_SIZEMB=$((IMG_SIZE/MiB))
 # Boot partition size is 256MiB
 export BOOT_PART_SIZE=$((256*MiB))
