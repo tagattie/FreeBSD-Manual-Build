@@ -12,6 +12,12 @@ export IMG_SIZEMB=$((IMG_SIZE/MiB))
 # Boot partition size is 256MiB
 export BOOT_PART_SIZE=$((256*MiB))
 export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
+# BSD partition config for ERL
+BSD_PART_FSMINFREE=$(bc -e "${IMG_SIZE}/1024*0.5" -e quit | \
+                         awk -F'.' '{print $1}')
+export BSD_PART_FSMINFREE
+export BSD_PART_FSMARGIN=$((1*MiB))
+export BSD_PART_FSSIZE=$(((IMG_SIZEMB-BOOT_PART_SIZEMB)*MiB-BSD_PART_FSMARGIN))
 
 do_post_installkernel() {
     echo "${CMDNAME}: Copying kernel files to FAT partition."

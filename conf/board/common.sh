@@ -35,11 +35,6 @@ export BSD_PART_FSTYPE=freebsd-ufs
 export BSD_PART_FSALIGN=$((64*KiB))
 export BSD_PART_FSENDIAN=big
 export BSD_PART_FSLABEL=rootfs
-BSD_PART_FSMINFREE=$(bc -e "${IMG_SIZE}/1024*0.5" -e quit | \
-                         awk -F'.' '{print $1}')
-export BSD_PART_FSMINFREE
-export BSD_PART_FSMARGIN=$((1*MiB))
-export BSD_PART_FSSIZE=$(((IMG_SIZEMB-BOOT_PART_SIZEMB)*MiB-BSD_PART_FSMARGIN))
 
 # Defaults for overlay files
 export OVERLAY_FILES="boot/loader.conf etc/fstab etc/rc.conf"
