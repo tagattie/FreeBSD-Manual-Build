@@ -66,11 +66,16 @@ create_bsd_filesystem_image() {
     return 0
 }
 
+clean_root_partition() {
+    ${SUDO} rm -rf "${WORKDIR}/${BSD_PART_FSLABEL}"
+}
+
 setup_bsd_partition() {
     create_bsd_partition
     copy_overlay_files
     create_placeholder_for_boot_partition
     populate_root_partition
     create_bsd_filesystem_image
+    clean_root_partition
     return 0
 }
