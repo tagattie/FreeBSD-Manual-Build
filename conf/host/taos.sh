@@ -22,7 +22,7 @@ export DESTDIR_BASEDIR=/mnt
 export DESTDIR_MOUNTTYPE=nfs
 export DESTDIR=${DESTDIR_BASEDIR}/${DESTHOST}
 
-MOUNT_TARGET_DIRS="/ /home /usr /var"
+MOUNT_TARGET_DIRS="/ /usr /var"
 MOUNT_TARGETS=$(for i in ${MOUNT_TARGET_DIRS}; do
                     echo "${DESTHOST}:${i}:${DESTDIR_MOUNTTYPE}:${DESTDIR}"
                 done)
