@@ -1,0 +1,67 @@
+#
+# Carambola 2 - an AR933x based SoC wifi device.
+#
+# http://shop.8devices.com/wifi4things/carambola2
+#
+# * AR9330 SoC
+# * 64MB RAM
+# * 16MB flash
+# * Integrated 1x1 2GHz wifi and 10/100 bridge
+#
+# $FreeBSD: releng/11.1/sys/mips/conf/CARAMBOLA2 295945 2016-02-24 00:39:36Z sobomax $
+#
+
+#NO_UNIVERSE
+
+# Include the default AR933x parameters
+include         "AR933X_BASE"
+
+ident           DEERVALLEY
+
+# Override hints with board values
+hints           "CARAMBOLA2.hints"
+
+# Board memory - 64MB
+options         AR71XX_REALMEM=(64*1024*1024)
+
+# i2c GPIO bus
+#device		gpioiic
+#device		iicbb
+#device		iicbus
+#device		iic
+
+# Options required for miiproxy and mdiobus
+options 	ARGE_MDIO	# Export an MDIO bus separate from arge
+device		miiproxy	# MDIO bus <-> MII PHY rendezvous
+
+device		etherswitch
+device		arswitch
+
+# read MSDOS formatted disks - USB
+#options 	MSDOSFS
+
+# Enable the uboot environment stuff rather then the
+# redboot stuff.
+options 	AR71XX_ENV_UBOOT
+
+# uzip - to boot natively from flash
+#device		geom_uzip
+#options 	GEOM_UZIP
+
+# Used for the static uboot partition map
+#device          geom_map
+
+# Boot off of the rootfs, as defined in the geom_map setup.
+#options 	ROOTDEVNAME=\"ufs:map/rootfs.uzip\"
+
+
+# Local addition
+options		NFSCL			# Network Filesystem Client
+options		NFSLOCKD		# Network Lock Manager
+options		NFS_ROOT		# NFS usable as /, requires NFSCL
+options		BOOTP		# Use BOOTP to obtain IP address/hostname
+				# Requires NFSCL and NFS_ROOT
+options		BOOTP_NFSROOT	# NFS mount root filesystem using BOOTP info
+options		BOOTP_NFSV3	# Use NFS v3 to NFS mount root
+options		BOOTP_COMPAT	# Workaround for broken bootp daemons.
+options		BOOTP_WIRED_TO=arge1 # Use interface arge1 for BOOTP
