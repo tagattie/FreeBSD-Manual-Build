@@ -33,30 +33,28 @@ export MOUNT_TARGETS="\
     nas:/TFTPBoot:${TFTPDIR_MOUNTTYPE}:${TFTPDIR_BASEDIR}"
 
 do_post_installkernel() {
-    if [ "${MAKE_TARGET}" = "installkernel" ]; then
-        UBOOTKERNLOADADDR="0x80050000"
-        UBOOTKERNENTRYPOINT="0x80050100"
-        UBOOTKERNIMGFILE="kernel.lzma.uImage"
-        echo "${CMDNAME}: Making kernel image for network boot."
-        /usr/local/bin/lzma e ${BOOTDIR_DEST}/kernel/kernel \
-                            ${BOOTDIR_DEST}/kernel/kernel.lzma
-        UBOOTKERNENTRYPOINT=$(elfdump -e ${BOOTDIR_DEST}/kernel/kernel | \
-                                  grep e_entry | \
-                                  awk -F':' '{print $2}')
-        mkimage -A mips \
-                -O linux \
-                -T kernel \
-                -C lzma \
-                -a ${UBOOTKERNLOADADDR} \
-                -e ${UBOOTKERNENTRYPOINT} \
-                -n FreeBSD \
-                -d ${BOOTDIR_DEST}/kernel/kernel.lzma \
-                ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE}
-        echo "${CMDNAME}: Copying kernel image to TFTP boot directory."
-        (mkdir -p ${DESTTFTPDIR} &&
-             cd ${DESTTFTPDIR} &&
-             mv -f ${UBOOTKERNIMGFILE} ${UBOOTKERNIMGFILE}.old &&
-             install -c ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE} .)
-    fi
+    UBOOTKERNLOADADDR="0x80050000"
+    UBOOTKERNENTRYPOINT="0x80050100"
+    UBOOTKERNIMGFILE="kernel.lzma.uImage"
+    echo "${CMDNAME}: Making kernel image for network boot."
+    /usr/local/bin/lzma e ${BOOTDIR_DEST}/kernel/kernel \
+                        ${BOOTDIR_DEST}/kernel/kernel.lzma
+    UBOOTKERNENTRYPOINT=$(elfdump -e ${BOOTDIR_DEST}/kernel/kernel | \
+                              grep e_entry | \
+                              awk -F':' '{print $2}')
+    mkimage -A mips \
+            -O linux \
+            -T kernel \
+            -C lzma \
+            -a ${UBOOTKERNLOADADDR} \
+            -e ${UBOOTKERNENTRYPOINT} \
+            -n FreeBSD \
+            -d ${BOOTDIR_DEST}/kernel/kernel.lzma \
+            ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE}
+    echo "${CMDNAME}: Copying kernel image to TFTP boot directory."
+    (mkdir -p ${DESTTFTPDIR} &&
+         cd ${DESTTFTPDIR} &&
+         mv -f ${UBOOTKERNIMGFILE} ${UBOOTKERNIMGFILE}.old &&
+         install -c ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE} .)
     return 0
 }
