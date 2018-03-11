@@ -32,7 +32,7 @@ export MOUNT_TARGETS="\
     nas:/NFSRoot:${ROOTDIR_MOUNTTYPE}:${ROOTDIR_BASEDIR} \
     nas:/TFTPBoot:${TFTPDIR_MOUNTTYPE}:${TFTPDIR_BASEDIR}"
 
-do_post_install_kernel() {
+do_post_installkernel() {
     if [ "${MAKE_TARGET}" = "installkernel" ]; then
         UBOOTKERNLOADADDR="0x80050000"
         UBOOTKERNENTRYPOINT="0x80050100"
@@ -58,9 +58,5 @@ do_post_install_kernel() {
              mv -f ${UBOOTKERNIMGFILE} ${UBOOTKERNIMGFILE}.old &&
              install -c ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE} .)
     fi
-    return 0
-}
-
-do_post_install_world() {
     return 0
 }
