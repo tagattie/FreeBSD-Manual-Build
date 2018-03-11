@@ -28,10 +28,10 @@ mount_targets() {
     for i in ${MOUNT_TARGETS}; do
         host=$(echo "${i}"|awk -F':' '{print $1}')
         dir=$(echo "${i}"|awk -F':' '{print $2}')
-        if [ "${dir}" = "/NFSRoot" ] || \
-               [ "${dir}" = "/TFTPBoot" ]; then
-            dir=
-        fi
+        # if [ "${dir}" = "/NFSRoot" ] || \
+        #        [ "${dir}" = "/TFTPBoot" ]; then
+        #     dir=
+        # fi
         fstype=$(echo "${i}"|awk -F':' '{print $3}')
         destbase=$(echo "${i}"|awk -F':' '{print $4}')
         echo "${CMDNAME}: Mounting ${i}..."
