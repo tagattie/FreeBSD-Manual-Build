@@ -1,56 +1,62 @@
 #! /bin/sh
 
-DESTHOST=deervalley
-CAPDDESTHOST=Deervalley
-KERNCONF=DEERVALLEY
+ARCH=mips
+BRANCH=releng111
 
-UNAME_m=mips
-UNAME_p=mips
+# source common variables and functions
+# shellcheck source=../common.sh
+. "${CONFDIR}/common.sh"
+# shellcheck source=../arch/amd64.sh
+. "${CONFDIR}/arch/${ARCH}.sh"
+# shellcheck source=../branch/releng111.sh
+. "${CONFDIR}/branch/${BRANCH}.sh"
 
-SRCDIR=/usr/src
+export DESTHOST=deervalley
+CAPDDESTHOST=$(echo ${DESTHOST} | \
+    awk '{print toupper(substr($0,1,1)) substr($0,2,length($0)-1)}')
+export CAPDDESTHOST
+KERNCONF=$(echo ${DESTHOST}|tr '[:lower:]' '[:upper:]')
+export KERNCONF
 
-ROOT_BASEDIR=/mnt/nfsroot
-ROOT_MOUNTTYPE=nfs
-TFTP_BASEDIR=/mnt/tftpboot
-TFTP_MOUNTTYPE=nfs
+export ROOTDIR_BASEDIR=/mnt/nfsroot
+export ROOTDIR_MOUNTTYPE=nfs
+export DESTROOTDIR=${ROOTDIR_BASEDIR}/${CAPDDESTHOST}
+export TFTPDIR_BASEDIR=/mnt/tftpboot
+export TFTPDIR_MOUNTTYPE=nfs
+export DESTTFTPDIR=${TFTPDIR_BASEDIR}/${CAPDDESTHOST}
 
-DESTDIR=${ROOT_BASEDIR}/${CAPDDESTHOST}
-TFTPDIR=${TFTP_BASEDIR}/${CAPDDESTHOST}
+export ROOTDIR_DEST=${DESTROOTDIR}${ROOTDIR}
+export BOOTDIR_DEST=${DESTROOTDIR}${BOOTDIR}
 
-ROOTDIR=/
-BOOTDIR=/boot
-
-DESTROOTDIR=${DESTDIR}${ROOTDIR}
-DESTBOOTDIR=${DESTDIR}${BOOTDIR}
-
-MOUNT_TARGETS="nas:/NFSRoot:${ROOT_MOUNTTYPE}:${ROOT_BASEDIR} \
-    nas:/TFTPBoot:${TFTP_MOUNTTYPE}:${TFTP_BASEDIR}"
+export MOUNT_TARGETS="\
+    nas:/NFSRoot:${ROOTDIR_MOUNTTYPE}:${ROOTDIR_BASEDIR} \
+    nas:/TFTPBoot:${TFTPDIR_MOUNTTYPE}:${TFTPDIR_BASEDIR}"
 
 do_post_install_kernel() {
-    if [ "${MAKE_TARGET}" == "installkernel" ]; then
+    if [ "${MAKE_TARGET}" = "installkernel" ]; then
         UBOOTKERNLOADADDR="0x80050000"
         UBOOTKERNENTRYPOINT="0x80050100"
         UBOOTKERNIMGFILE="kernel.lzma.uImage"
         echo "${CMDNAME}: Making kernel image for network boot."
-        /usr/local/bin/lzma e ${DESTBOOTDIR}/kernel/kernel \
-                            ${DESTBOOTDIR}/kernel/kernel.lzma
-        UBOOTKERNENTRYPOINT=$(elfdump -e ${DESTBOOTDIR}/kernel/kernel | \
+        /usr/local/bin/lzma e ${BOOTDIR_DEST}/kernel/kernel \
+                            ${BOOTDIR_DEST}/kernel/kernel.lzma
+        UBOOTKERNENTRYPOINT=$(elfdump -e ${BOOTDIR_DEST}/kernel/kernel | \
                                   grep e_entry | \
                                   awk -F':' '{print $2}')
         mkimage -A mips \
                 -O linux \
                 -T kernel \
                 -C lzma \
-                -a 0x80050000 \
+                -a ${UBOOTKERNLOADADDR} \
                 -e ${UBOOTKERNENTRYPOINT} \
                 -n FreeBSD \
-                -d ${DESTBOOTDIR}/kernel/kernel.lzma \
-                ${DESTBOOTDIR}/kernel/${UBOOTKERNIMGFILE}
+                -d ${BOOTDIR_DEST}/kernel/kernel.lzma \
+                ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE}
         echo "${CMDNAME}: Copying kernel image to TFTP boot directory."
-        (mkdir -p ${TFTPDIR} &&
-             cd ${TFTPDIR} &&
+        (mkdir -p ${DESTTFTPDIR} &&
+             cd ${DESTTFTPDIR} &&
              mv -f ${UBOOTKERNIMGFILE} ${UBOOTKERNIMGFILE}.old &&
-             install -c ${DESTBOOTDIR}/kernel/${UBOOTKERNIMGFILE} .)
+             install -c ${BOOTDIR_DEST}/kernel/${UBOOTKERNIMGFILE} .)
     fi
     return 0
 }
