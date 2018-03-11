@@ -27,15 +27,17 @@ print_usage() {
 mount_targets() {
     for i in ${MOUNT_TARGETS}; do
         host=$(echo "${i}"|awk -F':' '{print $1}')
-        dir=$(echo "${i}"|awk -F':' '{print $2}')
-        # if [ "${dir}" = "/NFSRoot" ] || \
-        #        [ "${dir}" = "/TFTPBoot" ]; then
-        #     dir=
-        # fi
+        hostdir=$(echo "${i}"|awk -F':' '{print $2}')
+        if [ "${hostdir}" = "/NFSRoot" ] || \
+               [ "${hostdir}" = "/TFTPBoot" ]; then
+            dir=
+        else
+            dir=${hostdir}
+        fi
         fstype=$(echo "${i}"|awk -F':' '{print $3}')
         destbase=$(echo "${i}"|awk -F':' '{print $4}')
         echo "${CMDNAME}: Mounting ${i}..."
-        mount -t "${fstype}" "${host}:${dir}" "${destbase}${dir}"
+        mount -t "${fstype}" "${host}:${hostdir}" "${destbase}${dir}"
     done
     return 0
 } # mount_targets()
