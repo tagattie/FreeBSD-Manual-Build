@@ -1,12 +1,15 @@
 #! /bin/sh
 
+ARCH=mips64
+BRANCH=releng111
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/mips64.sh
-. "${CONFDIR}/arch/mips64.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
 # shellcheck source=../branch/releng111.sh
-. "${CONFDIR}/branch/releng111.sh"
+. "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/erl.sh
 . "${CONFDIR}/board/erl.sh"
 
