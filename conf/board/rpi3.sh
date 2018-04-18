@@ -33,13 +33,15 @@ install_boot() {
         ${SUDO} ${INSTALL_FILE} "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
     done
 
-    DTB_REPO="https://github.com/raspberrypi/firmware/blob/master/boot"
+    # DTB_REPO="https://github.com/raspberrypi/firmware/blob/master/boot"
+    DTB_MASTERDIR=${LOCALBASE}/share/rpi-firmware
     DTB_FILES="bcm2710-rpi-3-b.dtb \
         overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
-    (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
+    # (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
     for i in ${DTB_FILES}; do
-        ${SUDO} fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
+        # ${SUDO} fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
+        ${SUDO} ${INSTALL_FILE} "${DTB_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}/${i}"
     done
 
     return 0
