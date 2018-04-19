@@ -24,23 +24,20 @@ do_post_installworld() {
 install_boot() {
     echo "${CMDNAME}: Copying boot files to EFI partition."
     UBOOT_MASTERDIR=${LOCALBASE}/share/u-boot/u-boot-rpi3
-    UBOOT_FILES="armstub8.bin bootcode.bin config.txt \
-        fixup.dat fixup_cd.dat fixup_x.dat \
-        start.elf start_cd.elf start_x.elf \
-        u-boot.bin"
+    UBOOT_FILES="u-boot.bin"
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}"
     for i in ${UBOOT_FILES}; do
         ${SUDO} ${INSTALL_FILE} "${UBOOT_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}"
     done
 
-    # DTB_REPO="https://github.com/raspberrypi/firmware/blob/master/boot"
     DTB_MASTERDIR=${LOCALBASE}/share/rpi-firmware
-    DTB_FILES="bcm2710-rpi-3-b.dtb \
+    DTB_FILES="armstub8.bin bootcode.bin config.txt \
+        fixup_cd.dat fixup_db.dat fixup_x.dat \
+        start_cd.elf start_db.elf start_x.elf start.elf \
+        bcm2710-rpi-3-b.dtb \
         overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
-    # (cd "${BOOTEFIDIR_DEST}" && rm -f "${DTB_FILES}")
     for i in ${DTB_FILES}; do
-        # ${SUDO} fetch -o "${BOOTEFIDIR_DEST}/${i}" "${DTB_REPO}/${i}?raw=true"
         ${SUDO} ${INSTALL_FILE} "${DTB_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}/${i}"
     done
 
