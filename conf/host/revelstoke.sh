@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ARCH=amd64
-BRANCH=releng111
+BRANCH=releng112
 
 # source common variables and functions
 # shellcheck source=../common.sh
