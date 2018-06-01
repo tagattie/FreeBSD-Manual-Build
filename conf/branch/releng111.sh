@@ -2,4 +2,4 @@
 
 export BRANCH=releng111
 
-export SRCDIR=/usr/src
+export SRCDIR=/mnt/freebsd/src/releng/111
