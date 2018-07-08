@@ -1,14 +1,18 @@
 #! /bin/sh
 
+ARCH=armv6
+BRANCH=releng112
+BOARD=rpi2
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/armv6.sh
-. "${CONFDIR}/arch/armv6.sh"
-# shellcheck source=../branch/releng111.sh
-. "${CONFDIR}/branch/releng111.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
+# shellcheck source=../branch/releng112.sh
+. "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/rpi2.sh
-. "${CONFDIR}/board/rpi2.sh"
+. "${CONFDIR}/board/${BOARD}.sh"
 
 DESTHOST=sugarbush
 CAPDDESTHOST=$(echo ${DESTHOST} | \
@@ -16,8 +20,6 @@ CAPDDESTHOST=$(echo ${DESTHOST} | \
 export CAPDDESTHOST
 KERNCONF=$(echo ${DESTHOST}|tr '[:lower:]' '[:upper:]')
 export KERNCONF
-
-export UBLDR_LOADADDR=0x2000000
 
 export DESTDIR_BASEDIR=/mnt
 export DESTDIR_MOUNTTYPE=nfs

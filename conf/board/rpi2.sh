@@ -6,6 +6,8 @@
 
 export BOARD_NAME=rpi2
 
+export UBLDR_LOADADDR=0x2000000
+
 # Image size is 2GiB
 export IMG_SIZE=$((2*GiB))
 export IMG_SIZEMB=$((IMG_SIZE/MiB))
@@ -50,7 +52,7 @@ install_boot() {
 
     echo "${CMDNAME}: Copying boot files to FAT partition."
     UBOOT_MASTERDIR=${LOCALBASE}/share/u-boot/u-boot-rpi2
-    UBOOT_FILES="u-boot.bin"
+    UBOOT_FILES="boot.scr u-boot.bin"
     for i in ${UBOOT_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
                 "${UBOOT_MASTERDIR}/${i}" \
