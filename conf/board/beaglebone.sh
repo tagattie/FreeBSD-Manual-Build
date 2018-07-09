@@ -6,6 +6,8 @@
 
 export BOARD_NAME=beaglebone
 
+export UBLDR_LOADADDR=0x88000000
+
 # Image size is 1GiB
 export IMG_SIZE=$((1*GiB))
 export IMG_SIZEMB=$((IMG_SIZE/MiB))
@@ -36,7 +38,7 @@ do_post_installworld() {
 install_boot() {
     echo "${CMDNAME}: Copying boot files to FAT partition."
     UBOOT_MASTERDIR=${LOCALBASE}/share/u-boot/u-boot-beaglebone
-    UBOOT_FILES="MLO u-boot.img"
+    UBOOT_FILES="MLO boot.scr u-boot.img"
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
     for i in ${UBOOT_FILES}; do
         ${SUDO} ${INSTALL_FILE} \
