@@ -134,3 +134,5 @@ device		kbdmux
 
 # Uncomment to enable evdev support for ti_adc
 # options		EVDEV_SUPPORT
+
+options		ROUTETABLES=2		# allocated fibs up to 65536. default is 1.
