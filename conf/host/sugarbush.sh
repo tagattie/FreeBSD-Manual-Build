@@ -14,7 +14,7 @@ BOARD=rpi2
 # shellcheck source=../board/rpi2.sh
 . "${CONFDIR}/board/${BOARD}.sh"
 
-DESTHOST=sugarbush
+export DESTHOST=sugarbush
 CAPDDESTHOST=$(echo ${DESTHOST} | \
     awk '{print toupper(substr($0,1,1)) substr($0,2,length($0)-1)}')
 export CAPDDESTHOST
