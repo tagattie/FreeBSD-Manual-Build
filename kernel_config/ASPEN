@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: releng/11.1/sys/i386/conf/GENERIC 318763 2017-05-24 00:00:55Z jhb $
+# $FreeBSD: releng/11.2/sys/i386/conf/GENERIC 323770 2017-09-19 16:51:51Z jpaetzel $
 
 cpu		I486_CPU
 cpu		I586_CPU
@@ -31,6 +31,7 @@ options 	PREEMPTION		# Enable kernel thread preemption
 options 	INET			# InterNETworking
 options 	INET6			# IPv6 communications protocols
 options 	IPSEC			# IP (v4/v6) security
+options		IPSEC_SUPPORT		# Allow kldload of ipsec and tcpmd5
 options 	TCP_OFFLOAD		# TCP offload
 options 	SCTP			# Stream Control Transmission Protocol
 options 	FFS			# Berkeley Fast Filesystem
@@ -360,7 +361,7 @@ device		virtio_scsi		# VirtIO SCSI device
 device		virtio_balloon		# VirtIO Memory Balloon device
 
 # HyperV drivers and enchancement support
-device		hyperv			# HyperV drivers 
+device		hyperv			# HyperV drivers
 
 # Xen HVM Guest Optimizations
 # NOTE: XENHVM depends on xenpci.  They must be added or removed together.
