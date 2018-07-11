@@ -32,7 +32,7 @@ install_boot() {
 
     DTB_MASTERDIR=${LOCALBASE}/share/rpi-firmware
     DTB_FILES="armstub8.bin bootcode.bin \
-        fixup_cd.dat fixup_db.dat fixup_x.dat \
+        fixup_cd.dat fixup_db.dat fixup_x.dat fixup.dat \
         start_cd.elf start_db.elf start_x.elf start.elf \
         bcm2710-rpi-3-b.dtb \
         overlays/mmc.dtbo overlays/pwm.dtbo overlays/pi3-disable-bt.dtbo"
