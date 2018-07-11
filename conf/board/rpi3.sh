@@ -14,7 +14,7 @@ export BOOT_PART_SIZE=$((32*MiB))
 export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 
 do_post_installworld() {
-    BOOT_FILES="boot1.efi"
+    BOOT_FILES="loader.efi"
     echo "${CMDNAME}: Copying boot files to EFI partition."
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/EFI/BOOT"
     ${SUDO} ${INSTALL_FILE} "${BOOTDIR_DEST}/${BOOT_FILES}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootaa64.efi"
@@ -31,15 +31,16 @@ install_boot() {
     done
 
     DTB_MASTERDIR=${LOCALBASE}/share/rpi-firmware
-    DTB_FILES="armstub8.bin bootcode.bin config.txt \
+    DTB_FILES="armstub8.bin bootcode.bin \
         fixup_cd.dat fixup_db.dat fixup_x.dat \
         start_cd.elf start_db.elf start_x.elf start.elf \
         bcm2710-rpi-3-b.dtb \
-        overlays/mmc.dtbo overlays/pi3-disable-bt.dtbo"
+        overlays/mmc.dtbo overlays/pwm.dtbo overlays/pi3-disable-bt.dtbo"
     ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/overlays"
     for i in ${DTB_FILES}; do
         ${SUDO} ${INSTALL_FILE} "${DTB_MASTERDIR}/${i}" "${BOOTEFIDIR_DEST}/${i}"
     done
+    ${SUDO} ${INSTALL_FILE} "${DTB_MASTERDIR}/config_rpi3.txt" "${BOOTEFIDIR_DEST}/config.txt"
 
     return 0
 }

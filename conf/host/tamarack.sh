@@ -1,14 +1,18 @@
 #! /bin/sh
 
+ARCH=aarch64
+BRANCH=current
+BOARD=rpi3
+
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/aarch64.sh
-. "${CONFDIR}/arch/aarch64.sh"
+. "${CONFDIR}/arch/${ARCH}.sh"
 # shellcheck source=../branch/current.sh
-. "${CONFDIR}/branch/current.sh"
+. "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/rpi3.sh
-. "${CONFDIR}/board/rpi3.sh"
+. "${CONFDIR}/board/${BOARD}.sh"
 
 export DESTHOST=tamarack
 CAPDDESTHOST=$(echo ${DESTHOST} | \
