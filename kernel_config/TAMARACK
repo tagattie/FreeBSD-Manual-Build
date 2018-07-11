@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: head/sys/arm64/conf/GENERIC 333455 2018-05-10 09:37:50Z manu $
+# $FreeBSD: head/sys/arm64/conf/GENERIC 335112 2018-06-14 06:28:09Z manu $
 
 cpu		ARM64
 ident		TAMARACK
@@ -93,6 +93,12 @@ options 	MALLOC_DEBUG_MAXZONES=8	# Separate malloc(9) zones
 options 	ALT_BREAK_TO_DEBUGGER	# Enter debugger on keyboard escape sequence
 options 	USB_DEBUG		# enable debug msgs
 
+# Kernel dump features.
+options 	EKCD			# Support for encrypted kernel dumps
+options 	GZIO			# gzip-compressed kernel and user dumps
+options 	ZSTDIO			# zstd-compressed kernel and user dumps
+options 	NETDUMP			# netdump(4) client support
+
 # SoC support
 options 	SOC_ALLWINNER_A64
 options 	SOC_ALLWINNER_H5
@@ -140,6 +146,7 @@ device		neta		# Marvell Armada 370/38x/XP/3700 NIC
 device  	smc		# SMSC LAN91C111
 device		vnic		# Cavium ThunderX NIC
 device		al_eth		# Annapurna Alpine Ethernet NIC
+device		dwc_rk		# Rockchip Designware
 
 # Block devices
 device		ahci
@@ -158,6 +165,8 @@ device		dwmmc
 
 # Serial (COM) ports
 device		uart		# Generic UART driver
+device		uart_msm	# Qualcomm MSM UART driver
+device		uart_mu		# RPI3 aux port
 device		uart_mvebu	# Armada 3700 UART driver
 device		uart_ns8250	# ns8250-type UART driver
 device		uart_snps
@@ -232,7 +241,6 @@ device		tun		# Packet tunnel.
 device		md		# Memory "disks"
 device		gif		# IPv6 and IPv4 tunneling
 device		firmware	# firmware assist module
-device		psci		# Support for ARM PSCI
 options 	EFIRT		# EFI Runtime Services
 
 # EXT_RESOURCES pseudo devices
