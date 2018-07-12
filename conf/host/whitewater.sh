@@ -1,17 +1,18 @@
 #! /bin/sh
 
 ARCH=mips64
-BRANCH=releng111
+BRANCH=releng112
+BOARD=erl
 
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/mips64.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/releng111.sh
+# shellcheck source=../branch/releng112.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/erl.sh
-. "${CONFDIR}/board/erl.sh"
+. "${CONFDIR}/board/${BOARD}.sh"
 
 export DESTHOST=whitewater
 CAPDDESTHOST=$(echo ${DESTHOST} | \
