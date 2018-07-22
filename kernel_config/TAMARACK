@@ -16,7 +16,7 @@
 # If you are in doubt as to the purpose or necessity of a line, check first
 # in NOTES.
 #
-# $FreeBSD: head/sys/arm64/conf/GENERIC 336259 2018-07-13 19:54:22Z mw $
+# $FreeBSD: head/sys/arm64/conf/GENERIC 336520 2018-07-19 21:59:52Z manu $
 
 cpu		ARM64
 ident		TAMARACK
@@ -232,6 +232,8 @@ device		bcm2835_spi	# Broadcom BCM283x SPI bus
 # Console
 device		vt
 device		kbdmux
+
+device		vt_efifb
 
 # Pseudo devices.
 device		loop		# Network loopback
