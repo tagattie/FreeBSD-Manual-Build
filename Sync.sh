@@ -50,8 +50,8 @@ SYNC_TO_DIR=:/usr/${SYNC_DIR}
 rsync ${RSYNC_FLAGS} \
       --exclude="/.svn" \
       --include="/usr/src/${UNAME_m}.${UNAME_p}" \
-      --exclude="/usr/src/${UNAME_m}.${UNAME_p}/sys/*" \
       --include="/usr/src/${UNAME_m}.${UNAME_p}/sys/${KERNCONF}" \
+      --exclude="/usr/src/${UNAME_m}.${UNAME_p}/sys/*" \
       --exclude="/var" \
       ${SYNC_FROM_DIRS} ${HOSTNAME}${SYNC_TO_DIR}
 
