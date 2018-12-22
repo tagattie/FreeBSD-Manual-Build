@@ -40,6 +40,9 @@ setup_make_command() {
     fi
 
     MAKE_ARGS="DESTDIR=${DESTDIR}"
+    if [ -n "${MAKE_ARGS_ADD}" ]; then
+        MAKE_ARGS="${MAKE_ARGS} ${MAKE_ARGS_ADD}"
+    fi
     if [ -n "${KERNCONF}" ]; then
         MAKE_ARGS="${MAKE_ARGS} KERNCONF=${KERNCONF}"
     fi
