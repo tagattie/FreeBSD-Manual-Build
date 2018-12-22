@@ -1,7 +1,10 @@
 #! /bin/sh
 
 export LANG=C
-export PATH=/usr/local/bin:/usr/bin:/bin
+export PATH=/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin
+
+BASEDIR=$(cd "$(dirname "$0")" && pwd)
+CONFDIR=${BASEDIR}/conf
 
 CMDNAME=$(basename "$0")
 
@@ -39,17 +42,17 @@ if [ -z "${SYNC_DIR}" ]; then
     exit 1
 fi
 
+. "${CONFDIR}/host/${HOSTNAME}.sh"
+
 SYNC_FROM_DIRS=/usr/${SYNC_DIR}/
 SYNC_TO_DIR=:/usr/${SYNC_DIR}
 
 rsync ${RSYNC_FLAGS} \
       --exclude="/.svn" \
-      --exclude="/arm.armv6" \
-      --exclude="/arm64.aarch64" \
-      --exclude="/i386.i386" \
-      --exclude="/mips.mips*" \
-      --include="/usr/src/sys/boot" \
-      --include="/usr/src/sys/${KERNCONF}" \
-      --exclude="/usr/src/sys/*" \
+      --include="/usr/src/${UNAME_m}.${UNAME_p}" \
+      --exclude="/usr/src/${UNAME_m}.${UNAME_p}/sys/*" \
+      --include="/usr/src/${UNAME_m}.${UNAME_p}/sys/${KERNCONF}" \
       --exclude="/var" \
       ${SYNC_FROM_DIRS} ${HOSTNAME}${SYNC_TO_DIR}
+
+exit $?
