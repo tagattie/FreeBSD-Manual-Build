@@ -1,15 +1,15 @@
 #! /bin/sh
 
-ARCH=armv6
-BRANCH=releng112
+ARCH=armv7
+BRANCH=releng120
 BOARD=rpi2
 
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
-# shellcheck source=../arch/armv6.sh
+# shellcheck source=../arch/armv7.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/releng112.sh
+# shellcheck source=../branch/releng120.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/rpi2.sh
 . "${CONFDIR}/board/${BOARD}.sh"
