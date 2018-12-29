@@ -17,7 +17,9 @@ do_post_installkernel() {
     echo "${CMDNAME}: Copying DTB files to FAT partition."
     DTB_DIR="dtb"
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}/${DTB_DIR}"
-    ${SUDO} rsync -rlDv --stats "${BOOTDIR_DEST}/${DTB_DIR}/" "${BOOTFATDIR_DEST}/${DTB_DIR}"
+    ${SUDO} rsync -rlDv --stats \
+            "${BOOTDIR_DEST}/${DTB_DIR}/" \
+            "${BOOTFATDIR_DEST}/${DTB_DIR}"
 
     return 0
 }
@@ -35,7 +37,9 @@ do_post_installworld() {
     echo "${CMDNAME}: Copying loader file to FAT partition."
     BOOT_FILE="loader_lua.efi"
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}/EFI/BOOT"
-    ${SUDO} ${INSTALL_FILE} "${BOOTDIR_DEST}/${BOOT_FILE}" "${BOOTFATDIR_DEST}/EFI/BOOT/bootarm.efi"
+    ${SUDO} ${INSTALL_FILE} \
+            "${BOOTDIR_DEST}/${BOOT_FILE}" \
+            "${BOOTFATDIR_DEST}/EFI/BOOT/bootarm.efi"
 
     return 0
 }
