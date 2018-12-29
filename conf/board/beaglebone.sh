@@ -34,14 +34,14 @@ do_post_installworld() {
 
     echo "${CMDNAME}: Copying loader file to FAT partition."
     BOOT_FILE="loader_lua.efi"
-    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/EFI/BOOT"
-    ${SUDO} ${INSTALL_FILE} "${BOOTDIR_DEST}/${BOOT_FILE}" "${BOOTEFIDIR_DEST}/EFI/BOOT/bootarm.efi"
+    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}/EFI/BOOT"
+    ${SUDO} ${INSTALL_FILE} "${BOOTDIR_DEST}/${BOOT_FILE}" "${BOOTFATDIR_DEST}/EFI/BOOT/bootarm.efi"
 
     return 0
 }
 
 install_boot() {
-    echo "${CMDNAME}: Copying boot files to FAT partition."
+    echo "${CMDNAME}: Copying u-boot files to FAT partition."
     UBOOT_MASTERDIR=${LOCALBASE}/share/u-boot/u-boot-beaglebone
     UBOOT_FILES="MLO u-boot.img"
     ${SUDO} mkdir -p "${BOOTFATDIR_DEST}"
