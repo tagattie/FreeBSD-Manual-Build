@@ -1,21 +1,18 @@
 #! /bin/sh
 
 ARCH=armv7
-BRANCH=current
+BRANCH=releng120
 BOARD=rpi2
 
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
-# shellcheck source=../arch/armv6.sh
+# shellcheck source=../arch/armv7.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/current.sh
+# shellcheck source=../branch/releng120.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/rpi2.sh
 . "${CONFDIR}/board/${BOARD}.sh"
-
-# Don't need UBLDR_LOADDDR on current
-export UBLDR_LOADADDR=
 
 export DESTHOST=squawvalley
 CAPDDESTHOST=$(echo ${DESTHOST} | \
