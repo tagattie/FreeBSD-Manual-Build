@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ARCH=aarch64
-BRANCH=current
+BRANCH=releng120
 BOARD=rpi3
 
 # source common variables and functions
@@ -9,7 +9,7 @@ BOARD=rpi3
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/aarch64.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/current.sh
+# shellcheck source=../branch/releng120.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/rpi3.sh
 . "${CONFDIR}/board/${BOARD}.sh"
@@ -20,8 +20,6 @@ CAPDDESTHOST=$(echo ${DESTHOST} | \
 export CAPDDESTHOST
 KERNCONF=$(echo ${DESTHOST}|tr '[:lower:]' '[:upper:]')
 export KERNCONF
-
-export SRCDIR=/mnt/freebsd/src/head
 
 export DESTDIR_BASEDIR=/mnt
 export DESTDIR_MOUNTTYPE=nfs
