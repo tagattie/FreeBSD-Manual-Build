@@ -14,12 +14,12 @@ export BOOT_PART_SIZE=$((32*MiB))
 export BOOT_PART_SIZEMB=$((BOOT_PART_SIZE/MiB))
 
 do_post_installkernel() {
-    echo "${CMDNAME}: Copying DTB files to FAT partition."
+    echo "${CMDNAME}: Copying DTB files to EFI partition."
     DTB_DIR="dtb"
-    ${SUDO} mkdir -p "${BOOTFATDIR_DEST}/${DTB_DIR}"
+    ${SUDO} mkdir -p "${BOOTEFIDIR_DEST}/${DTB_DIR}"
     ${SUDO} rsync -rlDv --stats \
             "${BOOTDIR_DEST}/${DTB_DIR}/" \
-            "${BOOTFATDIR_DEST}/${DTB_DIR}"
+            "${BOOTEFIDIR_DEST}/${DTB_DIR}"
 
     return 0
 }
@@ -46,7 +46,7 @@ install_boot() {
                 "${BOOTEFIDIR_DEST}"
     done
 
-    echo "${CMDNAME}: Copying RPI firmware files to FAT partition."
+    echo "${CMDNAME}: Copying RPI firmware files to EFI partition."
     RPI_MASTERDIR=${LOCALBASE}/share/rpi-firmware
     RPI_FILES="armstub8.bin bootcode.bin \
         fixup_cd.dat fixup_db.dat fixup_x.dat fixup.dat \
