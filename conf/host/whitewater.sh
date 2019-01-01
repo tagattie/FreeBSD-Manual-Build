@@ -1,7 +1,7 @@
 #! /bin/sh
 
 ARCH=mips64
-BRANCH=releng112
+BRANCH=releng120
 BOARD=erl
 
 # source common variables and functions
@@ -9,7 +9,7 @@ BOARD=erl
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/mips64.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/releng112.sh
+# shellcheck source=../branch/releng120.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 # shellcheck source=../board/erl.sh
 . "${CONFDIR}/board/${BOARD}.sh"
@@ -20,8 +20,6 @@ CAPDDESTHOST=$(echo ${DESTHOST} | \
 export CAPDDESTHOST
 KERNCONF=$(echo ${DESTHOST}|tr '[:lower:]' '[:upper:]')
 export KERNCONF
-
-#export MAKE_FLAGS_ADD="-DCROSS_TOOLCHAIN=mips64-gcc"
 
 export DESTDIR_BASEDIR=/mnt
 export DESTDIR_MOUNTTYPE=nfs
