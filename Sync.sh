@@ -52,6 +52,7 @@ rsync ${RSYNC_FLAGS} \
       --include="/usr/src/${UNAME_m}.${UNAME_p}" \
       --include="/usr/src/${UNAME_m}.${UNAME_p}/sys/${KERNCONF}" \
       --exclude="/usr/src/${UNAME_m}.${UNAME_p}/sys/*" \
+      --exclude="/usr/src/*" \
       --exclude="/var" \
       ${SYNC_FROM_DIRS} ${HOSTNAME}${SYNC_TO_DIR}
 
