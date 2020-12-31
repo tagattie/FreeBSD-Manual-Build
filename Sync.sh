@@ -48,6 +48,7 @@ SYNC_FROM_DIRS=/usr/${SYNC_DIR}/
 SYNC_TO_DIR=:/usr/${SYNC_DIR}
 
 rsync ${RSYNC_FLAGS} \
+      --exclude="/.git" \
       --exclude="/.svn" \
       --include="/usr/src/${UNAME_m}.${UNAME_p}" \
       --include="/usr/src/${UNAME_m}.${UNAME_p}/sys/${KERNCONF}" \
