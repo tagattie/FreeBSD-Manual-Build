@@ -1,14 +1,14 @@
 #! /bin/sh
 
 ARCH=i386
-BRANCH=releng130
+BRANCH=releng131
 
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/i386.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/releng130.sh
+# shellcheck source=../branch/releng131.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 
 export DESTHOST=aspen
