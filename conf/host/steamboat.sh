@@ -1,14 +1,14 @@
 #! /bin/sh
 
 ARCH=amd64
-BRANCH=releng140
+BRANCH=releng141
 
 # source common variables and functions
 # shellcheck source=../common.sh
 . "${CONFDIR}/common.sh"
 # shellcheck source=../arch/amd64.sh
 . "${CONFDIR}/arch/${ARCH}.sh"
-# shellcheck source=../branch/releng140.sh
+# shellcheck source=../branch/releng141.sh
 . "${CONFDIR}/branch/${BRANCH}.sh"
 
 export DESTHOST=steamboat
